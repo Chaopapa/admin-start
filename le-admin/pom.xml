@@ -34,7 +34,7 @@
         </dependency>
         <dependency>
             <groupId>com.le</groupId>
-            <artifactId>le-security</artifactId>
+            <artifactId>le-sso</artifactId>
             <version>${le.version}</version>
         </dependency>
     </dependencies>
