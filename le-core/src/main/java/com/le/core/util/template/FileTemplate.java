@@ -33,7 +33,7 @@ class FileTemplate {
         configuration = new Configuration(Configuration.getVersion());
         loadProperties();
         configuration.setDefaultEncoding(encoding);
-        File dir = new File(Constant.APP_PATH + "/WEB-INF/classes/tpl/");
+        File dir = new File(Constant.CLASS_DIR + "/tpl/");
 
         if (!dir.exists()) {
             dir.mkdirs();

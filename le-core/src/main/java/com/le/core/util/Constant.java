@@ -1,33 +1,30 @@
 package com.le.core.util;
 
 /**
- * @ClassName Constant
- * @Author lz
- * @Description 静态常量
- * @Date 2018/10/12 12:08
- * @Version V1.0
+ * 静态常量
+ *
+ * @author 严秋旺
+ * @since 2018/10/12 12:08
  **/
-@Deprecated//todo
 public final class Constant {
 
     /**
-     * 服务路径
+     * 项目路径
      */
     public static String CONTEXT_PATH = "";
     /**
-     * 项目硬盘上的路径
+     * 项目所在目录
      */
-    public static String APP_PATH = "";
+    public static String APP_DIR = "";
+    /**
+     * 类目录
+     */
+    public static String CLASS_DIR = "";
 
     /**
      * 超级用户id
      */
     public static final Long SUPER_ADMIN = 1L;
-
-    /**
-     * 前缀
-     */
-    public static final String PREFIX = "longe";
 
 
 }
