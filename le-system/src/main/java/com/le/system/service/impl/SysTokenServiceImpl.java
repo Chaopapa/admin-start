@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.le.system.entity.SysToken;
 import com.le.system.mapper.SysTokenMapper;
 import com.le.system.service.ISysTokenService;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -45,11 +46,17 @@ public class SysTokenServiceImpl extends ServiceImpl<SysTokenMapper, SysToken> i
         String token = generateToken();
 
         // 用户token
-        LambdaQueryWrapper<SysToken> qw = new QueryWrapper<SysToken>().lambda().eq(SysToken::getUserId, userId);
-        SysToken tokenEntity = this.getOne(qw);
-        if (tokenEntity == null) {
-            tokenEntity = new SysToken();
-        }
+//        LambdaQueryWrapper<SysToken> qw = new QueryWrapper<SysToken>().lambda().eq(SysToken::getUserId, userId);
+//        List<SysToken> list = this.list(qw);
+//        已登录的下线
+//        if (list == null || list.isEmpty()) {
+//            for (SysToken sysToken : list) {
+//                ISysTokenService that = (ISysTokenService) AopContext.currentProxy();
+//                that.removeToken(sysToken.getToken());
+//            }
+//        }
+
+        SysToken tokenEntity = new SysToken();
         // 设置用户id
         tokenEntity.setUserId(userId);
         // 设置token
@@ -85,5 +92,13 @@ public class SysTokenServiceImpl extends ServiceImpl<SysTokenMapper, SysToken> i
      */
     private String generateToken() {
         return UUID.randomUUID().toString().replace("-", "");
+    }
+
+    @CacheEvict(cacheNames = "token")
+    @Override
+    public void removeToken(String token) {
+        LambdaQueryWrapper<SysToken> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(SysToken::getToken, token);
+        baseMapper.delete(wrapper);
     }
 }

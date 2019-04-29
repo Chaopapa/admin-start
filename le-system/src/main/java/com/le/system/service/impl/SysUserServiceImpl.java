@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -37,57 +36,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Autowired
     private ISysLogService logService;
-
-    @Override
-    public R validate(HttpServletRequest request, String username, String password, boolean rememberMe) {
-//        long start = System.currentTimeMillis();
-//        GeetestLib gtSdk = new GeetestLib(GeetestConfig.getGeetest_id(), GeetestConfig.getGeetest_key());
-//        String challenge = request.getParameter(GeetestLib.fn_geetest_challenge);
-//        String validate = request.getParameter(GeetestLib.fn_geetest_validate);
-//        String seccode = request.getParameter(GeetestLib.fn_geetest_seccode);
-//
-//        Integer gt_server_status_code = (Integer) request.getSession()
-//                .getAttribute(gtSdk.gtServerStatusSessionKey);
-//        String userid = (String) request.getSession().getAttribute("userid");
-//        int gtResult = 0;
-//        String url = HttpContextUtils.getRequestUrl();
-//        String ip = IPUtils.getIpAddr();
-//
-//        if (gt_server_status_code == null) {
-//            logService.asyncLog(url, ip, null, username, null, "登录失败：会话超时", System.currentTimeMillis() - start);
-//            return new R(RCode.sessionOutTime);
-//        } else if (gt_server_status_code == 1) {
-//            gtResult = gtSdk.enhencedValidateRequest(challenge, validate, seccode, userid);
-//        } else {
-//            gtResult = gtSdk.failbackValidateRequest(challenge, validate, seccode);
-//        }
-//
-//        if (gtResult == 1) {
-//            if (username != null && password != null) {
-//                SysUser user = findByUsername(username);
-//                if (user == null) {
-//                    logService.asyncLog(url, ip, null, username, null, "登录失败：用户名错误", System.currentTimeMillis() - start);
-//                    return R.error("用户名或者密码不正确!");
-//                }
-//                if (!DigestUtil.md5Hex(password).equals(user.getPassword())) {
-//                    logService.asyncLog(url, ip, null, username, null, "登录失败：密码不正确", System.currentTimeMillis() - start);
-//                    return R.error("用户名或者密码不正确!");
-//                }
-//                //使用权限工具进行用户登录，登录成功后跳到shiro配置的successUrl中，与下面的return没什么关系！
-//                UsernamePasswordToken token = new UsernamePasswordToken(username, DigestUtil.md5Hex(password), rememberMe);
-//                Subject subject = SecurityUtils.getSubject();
-//                subject.login(token);
-//                logService.asyncLog(url, ip, user.getId(), user.getUsername(), user.getName(), "登录成功", System.currentTimeMillis() - start);
-//                return R.success();
-//            } else {
-//                return R.error("用户名或者密码不能为空!");
-//            }
-//        } else {
-//            logService.asyncLog(url, ip, null, username, null, "登录失败：验证码错误", System.currentTimeMillis() - start);
-//            return R.error("验证码错误!");
-//        }
-        return null;
-    }
 
     /**
      * @param username 账号
@@ -235,7 +183,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         user.setId(id);
         user.setPassword(newPassword);
         int rs = baseMapper.updateById(user);
-//        ShiroUtil.clearAllCache(); todo
         return rs;
     }
 }

@@ -13,32 +13,39 @@ import com.le.system.entity.SysToken;
 public interface ISysTokenService extends IService<SysToken> {
 
     /**
+     * @param token 值
+     * @return com.le.core.entity.SysToken
      * @description token查询用户Token
      * @author lz
      * @date 2018/10/18 11:25
-     * @param token 值
-     * @return com.le.core.entity.SysToken
      * @version V1.0.0
      */
     SysToken findToken(String token);
 
     /**
+     * @param userId
+     * @return com.le.core.entity.SysToken
      * @description 用户id创建Token
      * @author lz
      * @date 2018/10/18 11:25
-     * @param userId
-     * @return com.le.core.entity.SysToken
      * @version V1.0.0
      */
     SysToken createToken(Long userId);
 
     /**
+     * @param userId
+     * @return com.le.core.entity.SysToken
      * @description 用户id
      * @author lz
      * @date 2018/10/18 11:25
-     * @param userId
-     * @return com.le.core.entity.SysToken
      * @version V1.0.0
      */
     void expireToken(Long userId);
+
+    /**
+     * 删除token
+     *
+     * @param token
+     */
+    void removeToken(String token);
 }

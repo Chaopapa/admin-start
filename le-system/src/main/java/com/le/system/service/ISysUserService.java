@@ -6,7 +6,6 @@ import com.le.core.rest.R;
 import com.le.system.entity.SysUser;
 import com.le.system.entity.vo.SysUserVo;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -17,16 +16,6 @@ import java.util.List;
  * @Version V1.0
  **/
 public interface ISysUserService extends IService<SysUser> {
-
-    /**
-     * @param request 请求
-     * @return com.le.base.util.R
-     * @description 登录校验
-     * @author lz
-     * @date 2018/10/11 10:36
-     * @version V1.0.0
-     */
-    R validate(HttpServletRequest request, String username, String password, boolean rememberMe);
 
     /**
      * @param username 账号
