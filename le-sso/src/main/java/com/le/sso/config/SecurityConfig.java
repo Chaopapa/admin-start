@@ -13,7 +13,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
@@ -27,8 +26,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private AuthenticationHandler authenticationHandler;
-    @Autowired
-    private AccessDeniedHandler accessDeniedHandler;
     @Autowired
     private SystemUserAuthenticationProvider systemUserAuthenticationProvider;
     @Autowired
@@ -51,7 +48,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // don't create se`ssion
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .exceptionHandling().authenticationEntryPoint(authenticationHandler)
-                .accessDeniedHandler(accessDeniedHandler).and()
+//                .accessDeniedHandler(accessDeniedHandler)  //由全局异常处理
+                .and()
                 .authenticationProvider(systemUserAuthenticationProvider)
                 .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .headers().cacheControl();

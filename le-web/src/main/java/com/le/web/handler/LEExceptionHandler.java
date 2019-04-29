@@ -1,9 +1,7 @@
 package com.le.web.handler;
 
 import com.le.core.exception.LEException;
-import com.le.core.exception.TokenException;
 import com.le.core.rest.R;
-import com.le.core.rest.RCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.validation.BindException;
@@ -76,20 +74,6 @@ public class LEExceptionHandler {
             return R.error(errorMsg.toString());
         }
         return R.error(e.getMessage());
-    }
-
-    /**
-     * 处理token自定义异常
-     */
-    @ExceptionHandler(TokenException.class)
-    public R handleTokenException(TokenException e) {
-        if (e.getToken() == null) {
-            return new R(RCode.tokenNone);
-        } else if (e.getToken().isEmpty()) {
-            return new R(RCode.tokenEmpty);
-        } else {
-            return new R(RCode.tokenExpired);
-        }
     }
 
     /**
