@@ -17,7 +17,14 @@ import java.util.List;
  **/
 public interface SysUserMapper extends BaseMapper<SysUser> {
 
-    List<String> findAuthorities(Long userId);
+    List<String> selectPermission(Long userId);
 
-    List<SysUserVo> findSysRole(Page<SysUserVo> page, @Param("search") SysUser search);
+    List<String> selectAllPermission();
+
+    List<String> selectRole(Long userId);
+
+    List<String> selectAllRole();
+
+    List<SysUserVo> selectUserWithRole(Page<SysUserVo> page, @Param("search") SysUser search);
+
 }

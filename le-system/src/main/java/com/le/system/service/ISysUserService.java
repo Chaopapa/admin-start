@@ -38,14 +38,20 @@ public interface ISysUserService extends IService<SysUser> {
     R editData(SysUser user, List<Long> roles);
 
     /**
+     * 查找用户所有权限permission
+     *
      * @param userId 用户id
-     * @return java.util.List<java.lang.String>
-     * @description rbac 查找用户所有权限permission
-     * @author lz
-     * @date 2018/10/11 10:44
-     * @version V1.0.0
+     * @return 返回权限列表
      */
-    List<String> findAuthorities(Long userId);
+    List<String> findPermission(Long userId);
+
+    /**
+     * 查询用户权限
+     *
+     * @param userId 用户id
+     * @return 返回角色列表
+     */
+    List<String> findRole(Long userId);
 
     /**
      * @param username 用户账号
@@ -86,8 +92,10 @@ public interface ISysUserService extends IService<SysUser> {
 
     /**
      * 修改用户密码
-     *  @param id
+     *
+     * @param id
      * @param password
      */
     int updatePassword(Long id, String password);
+
 }

@@ -13,15 +13,29 @@
         <result column="status" property="status"/>
     </resultMap>
     <!-- 查询用户的所有权限 -->
-    <select id="findAuthorities" resultType="String">
+    <select id="selectPermission" resultType="String">
 		SELECT DISTINCT e.permission
         FROM sys_user_role o
         JOIN sys_role_resource r ON o.role_id = r.role_id
-        JOIN sys_resource e ON r.resource_id = e.id and e.type=1 and e.permission is not null and e.permission != ''
+        JOIN sys_resource e ON r.resource_id = e.id and e.permission is not null and e.permission != ''
         WHERE o.user_id = #{userId}
 	</select>
+    <select id="selectAllPermission" resultType="java.lang.String">
+		SELECT DISTINCT e.permission
+        FROM sys_resource e
+        WHERE e.permission is not null and e.permission != ''
+    </select>
+    <select id="selectRole" resultType="java.lang.String">
+		SELECT r.role
+        FROM sys_user_role ur JOIN sys_role r on ur.role_id = r.id
+        WHERE ur.user_id = #{userId}
+    </select>
+    <select id="selectAllRole" resultType="java.lang.String">
+		SELECT r.role
+        FROM sys_role r
+    </select>
     <!--用户表，角色表，用户角色表三表联合查询-->
-    <select id="findSysRole" resultType="com.le.system.entity.vo.SysUserVo">
+    <select id="selectUserWithRole" resultType="com.le.system.entity.vo.SysUserVo">
         SELECT s.id, s.create_date, s.username, s.name, s.phone, s.status,
         GROUP_CONCAT(r.name order by r.create_date ) roleName
         FROM sys_user AS s LEFT JOIN sys_user_role AS u ON s.id=u.user_id

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.le.core.rest.R;
+import com.le.core.util.Constant;
 import com.le.system.entity.SysUser;
 import com.le.system.entity.SysUserRole;
 import com.le.system.entity.vo.SysUserVo;
@@ -16,6 +17,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -82,27 +84,26 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         return R.success();
     }
 
-    /**
-     * @param userId 用户id
-     * @return java.util.List<java.lang.String>
-     * @description rbac 查找用户所有权限permission
-     * @author lz
-     * @date 2018/10/11 10:44
-     * @version V1.0.0
-     */
+    @Cacheable("sso:permission")
     @Override
-    public List<String> findAuthorities(Long userId) {
-        return baseMapper.findAuthorities(userId);
+    public List<String> findPermission(Long userId) {
+        if (Constant.SUPER_ADMIN.equals(userId)) {
+            return baseMapper.selectAllPermission();
+        } else {
+            return baseMapper.selectPermission(userId);
+        }
     }
 
-    /**
-     * @param username 用户账号
-     * @return java.util.List<java.lang.String>
-     * @description rbac 查找用户账号是否存在
-     * @author lz
-     * @date 2018/10/11 10:44
-     * @version V1.0.0
-     */
+    @Cacheable("sso:role")
+    @Override
+    public List<String> findRole(Long userId) {
+        if (Constant.SUPER_ADMIN.equals(userId)) {
+            return baseMapper.selectAllRole();
+        } else {
+            return baseMapper.selectRole(userId);
+        }
+    }
+
     @Override
     public boolean usernameExists(String username) {
         QueryWrapper<SysUser> qw = new QueryWrapper<>();
@@ -171,7 +172,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             search.setName("%" + search.getName() + "%");
         }
 
-        List<SysUserVo> list = baseMapper.findSysRole(page, search);
+        List<SysUserVo> list = baseMapper.selectUserWithRole(page, search);
         page.setRecords(list);
         return R.success(page);
     }

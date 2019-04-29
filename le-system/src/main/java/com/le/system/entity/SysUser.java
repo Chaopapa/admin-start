@@ -47,6 +47,4 @@ public class SysUser extends SuperEntity {
      */
     private Integer status;
 
-    @TableField(exist = false)
-    private Set<SysRole> roles = new HashSet<>();
 }

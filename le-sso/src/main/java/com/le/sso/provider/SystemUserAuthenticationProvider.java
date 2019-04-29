@@ -11,10 +11,13 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author 严秋旺
@@ -43,7 +46,20 @@ public class SystemUserAuthenticationProvider implements AuthenticationProvider 
         }
 
         SysToken token = tokenService.createToken(user.getId());
-        SystemUserAuthenticationToken authenticationToken = new SystemUserAuthenticationToken(token.getUserId(), null, new ArrayList<>());
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        List<String> permissions = userService.findPermission(user.getId());
+        List<String> roles = userService.findRole(user.getId());
+
+        for (String permission : permissions) {
+            authorities.add(new SimpleGrantedAuthority(permission));
+        }
+
+        for (String role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role));
+        }
+
+        SystemUserAuthenticationToken authenticationToken
+                = new SystemUserAuthenticationToken(token.getUserId(), null, authorities);
         authenticationToken.setDetails(token);
         return authenticationToken;
     }

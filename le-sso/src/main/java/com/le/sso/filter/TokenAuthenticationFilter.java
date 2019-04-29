@@ -1,9 +1,14 @@
 package com.le.sso.filter;
 
 import com.le.sso.authentication.SystemUserAuthenticationToken;
+import com.le.system.entity.SysRole;
 import com.le.system.entity.SysToken;
+import com.le.system.service.ISysRoleService;
 import com.le.system.service.ISysTokenService;
+import com.le.system.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -14,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author 严秋旺
@@ -24,6 +30,8 @@ import java.util.ArrayList;
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private ISysTokenService tokenService;
+    @Autowired
+    private ISysUserService userService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -41,7 +49,19 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         SysToken sysToken = tokenService.findToken(token);
 
         if (sysToken != null) {
-            SystemUserAuthenticationToken authenticationToken = new SystemUserAuthenticationToken(sysToken.getUserId(), null, new ArrayList<>());
+            List<GrantedAuthority> authorities = new ArrayList<>();
+            List<String> permissions = userService.findPermission(sysToken.getUserId());
+            List<String> roles = userService.findRole(sysToken.getUserId());
+
+            for (String permission : permissions) {
+                authorities.add(new SimpleGrantedAuthority(permission));
+            }
+
+            for (String role : roles) {
+                authorities.add(new SimpleGrantedAuthority(role));
+            }
+
+            SystemUserAuthenticationToken authenticationToken = new SystemUserAuthenticationToken(sysToken.getUserId(), null, authorities);
             authenticationToken.setDetails(sysToken);
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         }

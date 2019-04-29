@@ -31,7 +31,4 @@ public class SysRole extends SuperEntity {
      */
     private String role;
 
-    @TableField(exist = false)
-    private Set<SysResource> roles = new HashSet<>();
-
 }

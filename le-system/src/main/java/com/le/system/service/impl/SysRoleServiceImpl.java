@@ -65,12 +65,19 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
      * @version V1.0.0
      */
     @Override
-    public R manageData(Page<SysRole> pagination, String name) {
-        QueryWrapper<SysRole> qw = new QueryWrapper<>();
-        if (StringUtils.isNotBlank(name)) {
-            qw.like("nickname", name);
+    public R findPage(Page<SysRole> pagination, SysRole search) {
+        LambdaQueryWrapper<SysRole> qw = new LambdaQueryWrapper<>();
+
+        if (StringUtils.isNotBlank(search.getName())) {
+            qw.like(SysRole::getName, search.getName());
         }
-        qw.orderByDesc("create_date");
+
+        if (StringUtils.isNotBlank(search.getRole())) {
+            qw.like(SysRole::getRole, search.getRole());
+        }
+
+        //noinspection unchecked
+        qw.orderByDesc(SysRole::getCreateDate);
 
         IPage<SysRole> page = this.page(pagination, qw);
         return R.success(page);

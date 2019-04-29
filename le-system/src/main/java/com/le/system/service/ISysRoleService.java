@@ -36,7 +36,7 @@ public interface ISysRoleService extends IService<SysRole> {
      * @date 2018/10/11 10:12
      * @version V1.0.0
      */
-    R manageData(Page<SysRole> page, String name);
+    R findPage(Page<SysRole> page, SysRole search);
 
     /**
      * @param role
