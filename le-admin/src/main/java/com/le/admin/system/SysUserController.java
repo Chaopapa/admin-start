@@ -57,9 +57,7 @@ public class SysUserController {
     }
 
     /**
-     * @Description: 跳转用户信息页
-     * @Title: edit
-     * @author lz
+     * 用户信息页
      */
     @RequestMapping("/detail")
     @PreAuthorize("hasAuthority('sys:user:view')")
@@ -67,10 +65,19 @@ public class SysUserController {
     public R detail(Long id) {
         SysUser user = sysUserService.getById(id);
         List<SysRole> userRole = sysRoleService.findUserRole(id);
-        List<SysRole> roles = sysRoleService.list(null);
         return R.success()
                 .putData("user", user)
-                .putData("userRole", userRole)
+                .putData("userRole", userRole);
+    }
+
+    /**
+     * 角色列表
+     */
+    @RequestMapping("/roles")
+    @PreAuthorize("hasAuthority('sys:user:view')")
+    public R roles(Long id) {
+        List<SysRole> roles = sysRoleService.list(null);
+        return R.success()
                 .putData("roles", roles);
     }
 
@@ -99,9 +106,7 @@ public class SysUserController {
     }
 
     /**
-     * @Description: 重置密码 123456
-     * @Title: resetPassword
-     * @author lz
+     * 重置密码 123456
      */
     @RequestMapping(value = "/reset")
     @ResponseBody
@@ -122,24 +127,25 @@ public class SysUserController {
     @RequestMapping(value = "/checkUserName")
     @ResponseBody
     @PreAuthorize("hasAuthority('sys:user:edit')")
-    public Map<String, Object> checkUserName(@RequestParam(required = false) Long id, String username) {
+    public R checkUserName(@RequestParam(required = false) Long id, String username) {
         boolean exist = sysUserService.usernameExists(id, username);
-
-        Map<String, Object> rest = new HashMap<>();
-        rest.put("valid", !exist);
-        return rest;
+        return R.success().putData("exist", exist);
     }
 
     /**
-     * @return R 返回类型
-     * @Description: 删除用户
-     * @author lz
+     * 删除用户
      */
     @RequestMapping("/del")
     @ResponseBody
     @PreAuthorize("hasAuthority('sys:user:edit')")
     @SystemLog("删除用户")
     public R del(@RequestParam(value = "ids") List<Long> ids) {
+        for (Long id : ids) {
+            if (id <= 10) {
+                return R.error("系统用户不能删除");
+            }
+        }
+
         sysUserService.del(ids);
         return R.success();
     }
