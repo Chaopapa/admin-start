@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,13 +26,14 @@ public class SysUser extends SuperEntity {
 
     private static final long serialVersionUID = 1L;
     /**
-     * 昵称
+     * 名称
      */
+    @NotBlank(message = "名称为空")
     private String name;
     /**
-     * 用户名
+     * 登录名
      */
-    @NotBlank(message = "请填写用户名")
+    @NotBlank(message = "用户名为空")
     private String username;
     /**
      * 密码
@@ -45,6 +47,7 @@ public class SysUser extends SuperEntity {
     /**
      * 状态 0 可用 1 不可用
      */
+    @NotNull(message = "状态为空")
     private Integer status;
 
 }

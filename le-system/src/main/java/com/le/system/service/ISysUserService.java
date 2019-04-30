@@ -35,7 +35,7 @@ public interface ISysUserService extends IService<SysUser> {
      * @date 2018/10/11 10:14
      * @version V1.0.0
      */
-    R editData(SysUser user, List<Long> roles);
+    void editData(SysUser user, List<Long> roles);
 
     /**
      * 查找用户所有权限permission
@@ -54,34 +54,27 @@ public interface ISysUserService extends IService<SysUser> {
     List<String> findRole(Long userId);
 
     /**
+     * 查找用户账号是否存在
+     *
+     * @param username 用户id
      * @param username 用户账号
      * @return java.util.List<java.lang.String>
-     * @description rbac 查找用户账号是否存在
-     * @author lz
-     * @date 2018/10/11 10:44
-     * @version V1.0.0
      */
-    boolean usernameExists(String username);
+    boolean usernameExists(Long id,String username);
 
     /**
-     * @param ids
-     * @return com.le.base.util.R
-     * @description 删除用户
-     * @author lz
-     * @date 2018/10/11 10:14
-     * @version V1.0.0
+     * 删除用户
+     *
+     * @param ids 用户ID
      */
-    R del(List<Long> ids);
+    void del(List<Long> ids);
 
     /**
-     * @param id
-     * @return com.le.base.util.R
-     * @description 重置密码 123456
-     * @author lz
-     * @date 2018/10/11 10:14
-     * @version V1.0.0
+     * 重置密码 123456
+     *
+     * @param id 用户ID
      */
-    R resetPassword(Long id);
+    void resetPassword(Long id);
 
     /**
      * @Description:用户管理分页

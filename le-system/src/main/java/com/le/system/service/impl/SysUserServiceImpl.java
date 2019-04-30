@@ -65,23 +65,25 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public R editData(SysUser user, List<Long> roles) {
+    public void editData(SysUser user, List<Long> roles) {
         Long userId = user.getId();
+        String password = user.getPassword();
 
         if (userId == null) {
-            String password = user.getPassword();
-            if (StringUtils.isBlank(password)) {
-                return R.error("请输入密码");
-            }
             user.setPassword(DigestUtils.md5Hex(password));
             user.setStatus(0);
             save(user);
             sysUserRoleService.replaceUserRole(user, roles);
         } else {
+            if (StringUtils.isBlank(password)) {
+                user.setPassword(null);
+            } else {
+                user.setPassword(DigestUtils.md5Hex(password));
+            }
+
             updateById(user);
             sysUserRoleService.replaceUserRole(user, roles);
         }
-        return R.success();
     }
 
     @Cacheable("sso:permission")
@@ -105,30 +107,27 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public boolean usernameExists(String username) {
-        QueryWrapper<SysUser> qw = new QueryWrapper<>();
-        qw.eq("username", username);
-        Integer count = baseMapper.selectCount(qw);
-        return count > 0 ? true : false;
+    public boolean usernameExists(Long id, String username) {
+        LambdaQueryWrapper<SysUser> wrapper = new LambdaQueryWrapper<>();
+
+        if (id != null) {
+            wrapper.ne(SysUser::getId, id);
+        }
+
+        wrapper.eq(SysUser::getUsername, username);
+        Integer count = baseMapper.selectCount(wrapper);
+        return count != null && count > 0;
     }
 
-    /**
-     * @param ids
-     * @return com.le.base.util.R
-     * @description 删除用户
-     * @author lz
-     * @date 2018/10/11 10:14
-     * @version V1.0.0
-     */
+    @Transactional
     @Override
-    public R del(List<Long> ids) {
+    public void del(List<Long> ids) {
         if (CollectionUtils.isNotEmpty(ids)) {
             for (Long id : ids) {
                 delUserRole(id);
             }
             removeByIds(ids);
         }
-        return R.success();
     }
 
     private void delUserRole(Long userId) {
@@ -138,26 +137,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public R resetPassword(Long id) {
-        SysUser user = baseMapper.selectById(id);
-
-        if (user == null) {
-            return R.error("用户不存在 ");
-        }
-
+    public void resetPassword(Long id) {
         this.updatePassword(id, "123456");
-        return R.success();
     }
 
-    /**
-     * @param page   分页参数
-     * @param search SysUser 对象
-     * @return com.le.base.util.R
-     * @description 后台用户分页
-     * @author lz
-     * @date 2018/10/11 10:12
-     * @version V1.0.0
-     */
     @Override
     public R findPage(Page<SysUserVo> page, SysUser search) {
         if (StringUtils.isNotEmpty(search.getUsername())) {

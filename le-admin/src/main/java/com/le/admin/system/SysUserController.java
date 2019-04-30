@@ -2,7 +2,9 @@ package com.le.admin.system;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.le.core.rest.R;
+import com.le.system.entity.SysRole;
 import com.le.system.entity.SysUser;
+import com.le.system.entity.SysUserRole;
 import com.le.system.entity.vo.SysUserVo;
 import com.le.system.service.ISysRoleService;
 import com.le.system.service.ISysUserService;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,12 +66,12 @@ public class SysUserController {
     @SystemLog("查看用户详情")
     public R detail(Long id) {
         SysUser user = sysUserService.getById(id);
-
-//            Map<String, SysUserRole> roleMap = sysRoleService.findUserRoleMap(id);
-//            model.put("roleMap", roleMap);
-
-//        model.put("roles", sysRoleService.list(null));
-        return R.success().putData("user", user);
+        List<SysRole> userRole = sysRoleService.findUserRole(id);
+        List<SysRole> roles = sysRoleService.list(null);
+        return R.success()
+                .putData("user", user)
+                .putData("userRole", userRole)
+                .putData("roles", roles);
     }
 
     /**
@@ -80,8 +83,19 @@ public class SysUserController {
     @ResponseBody
     @PreAuthorize("hasAuthority('sys:user:edit')")
     @SystemLog("编辑用户信息")
-    public R edit(SysUser user, @RequestParam(value = "roleId", required = false) List<Long> roles) {
-        return sysUserService.editData(user, roles);
+    public R edit(@Valid SysUser user, @RequestParam(value = "roleId", required = false) List<Long> roles) {
+        if (user.getId() == null && StringUtils.isBlank(user.getPassword())) {
+            return R.error("请输入密码");
+        }
+
+        boolean exist = sysUserService.usernameExists(user.getId(), user.getUsername());
+
+        if (exist) {
+            return R.error("登录名重复");
+        }
+
+        sysUserService.editData(user, roles);
+        return R.success();
     }
 
     /**
@@ -94,27 +108,23 @@ public class SysUserController {
     @PreAuthorize("hasAuthority('sys:user:edit')")
     @SystemLog("重置用户密码")
     public R reset(Long id) {
-        return sysUserService.resetPassword(id);
+        sysUserService.resetPassword(id);
+        return R.success();
     }
 
     /**
      * 检查用户名
      *
-     * @param oldUsername
-     * @param username
+     * @param id       用户id
+     * @param username 登录名
      * @return
      */
     @RequestMapping(value = "/checkUserName")
     @ResponseBody
     @PreAuthorize("hasAuthority('sys:user:edit')")
-    public Map<String, Object> checkUserName(String oldUsername, String username) {
-        boolean exist;
+    public Map<String, Object> checkUserName(@RequestParam(required = false) Long id, String username) {
+        boolean exist = sysUserService.usernameExists(id, username);
 
-        if (StringUtils.isNotBlank(oldUsername) && oldUsername.equals(username)) {
-            exist = false;
-        } else {
-            exist = sysUserService.usernameExists(username);
-        }
         Map<String, Object> rest = new HashMap<>();
         rest.put("valid", !exist);
         return rest;
@@ -130,6 +140,7 @@ public class SysUserController {
     @PreAuthorize("hasAuthority('sys:user:edit')")
     @SystemLog("删除用户")
     public R del(@RequestParam(value = "ids") List<Long> ids) {
-        return sysUserService.del(ids);
+        sysUserService.del(ids);
+        return R.success();
     }
 }
