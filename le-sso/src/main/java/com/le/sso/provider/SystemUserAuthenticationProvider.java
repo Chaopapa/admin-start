@@ -3,6 +3,7 @@ package com.le.sso.provider;
 import com.le.sso.authentication.SystemUserAuthenticationToken;
 import com.le.system.entity.SysToken;
 import com.le.system.entity.SysUser;
+import com.le.system.entity.enums.TokenType;
 import com.le.system.service.ISysTokenService;
 import com.le.system.service.ISysUserService;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -45,7 +46,7 @@ public class SystemUserAuthenticationProvider implements AuthenticationProvider 
             throw new BadCredentialsException("用户名或者密码错误");
         }
 
-        SysToken token = tokenService.createToken(user.getId());
+        SysToken token = tokenService.createToken(user.getId(), TokenType.SYSTEM);
         List<GrantedAuthority> authorities = new ArrayList<>();
         List<String> permissions = userService.findPermission(user.getId());
         List<String> roles = userService.findRole(user.getId());

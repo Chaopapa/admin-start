@@ -44,7 +44,7 @@ public class UserAuthenticationContreoller {
                 = new SystemUserAuthenticationToken(userLogin.getUsername(), userLogin.getPassword());
         Authentication authentication = authenticationManager.authenticate(authenticationToken);
         SysToken details = (SysToken) authentication.getDetails();
-        return R.success().putData("token", details.getToken());
+        return R.success().putData("token", details.getId());
     }
 
     /**
@@ -55,7 +55,7 @@ public class UserAuthenticationContreoller {
     @RequestMapping("logout")
     public R logout() {
         SysToken token = ssoService.findLoginToken();
-        tokenService.removeToken(token.getToken());
+        tokenService.removeToken(token.getId());
         SecurityContextHolder.clearContext();
         return R.success();
     }

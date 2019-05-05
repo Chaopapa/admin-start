@@ -2,6 +2,7 @@ package com.le.system.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.le.system.entity.SysToken;
+import com.le.system.entity.enums.TokenType;
 
 /**
  * @ClassName ISysTokenService
@@ -23,24 +24,23 @@ public interface ISysTokenService extends IService<SysToken> {
     SysToken findToken(String token);
 
     /**
-     * @param userId
+     * 用户id创建Token
+     *
+     * @param userId    用户id
+     * @param tokenType token类型
      * @return com.le.core.entity.SysToken
-     * @description 用户id创建Token
-     * @author lz
-     * @date 2018/10/18 11:25
-     * @version V1.0.0
      */
-    SysToken createToken(Long userId);
+    SysToken createToken(Long userId, TokenType tokenType);
 
-    /**
-     * @param userId
-     * @return com.le.core.entity.SysToken
-     * @description 用户id
-     * @author lz
-     * @date 2018/10/18 11:25
-     * @version V1.0.0
-     */
-    void expireToken(Long userId);
+//    /**
+//     * @param userId
+//     * @return com.le.core.entity.SysToken
+//     * @description 用户id
+//     * @author lz
+//     * @date 2018/10/18 11:25
+//     * @version V1.0.0
+//     */
+//    void expireToken(Long userId);
 
     /**
      * 删除token

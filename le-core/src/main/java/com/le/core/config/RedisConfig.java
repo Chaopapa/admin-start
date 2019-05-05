@@ -1,4 +1,4 @@
-package com.le.web.config;
+package com.le.core.config;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
@@ -13,6 +13,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
@@ -30,6 +31,8 @@ import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisClientConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.listener.KeyExpirationEventMessageListener;
+import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.RedisSerializer;
@@ -55,18 +58,19 @@ import java.util.Set;
  * @Date 2018/10/8 10:12
  * @Version V1.0
  **/
+@ConditionalOnProperty("spring.redis.host")
 @Configuration
 @EnableCaching
 public class RedisConfig extends CachingConfigurerSupport {
 
     private static final Logger Logger = LoggerFactory.getLogger(RedisConfig.class);
 
-    private StringRedisSerializer keySerializer(){
+    private StringRedisSerializer keySerializer() {
         Charset charset = Charset.forName("UTF-8");
         return new StringRedisSerializer(charset);
     }
 
-    private RedisSerializer<Object> valueSerializer(){
+    private RedisSerializer<Object> valueSerializer() {
         Jackson2JsonRedisSerializer<Object> serializer = new Jackson2JsonRedisSerializer<>(Object.class);
         ObjectMapper om = new ObjectMapper();
 
@@ -107,6 +111,7 @@ public class RedisConfig extends CachingConfigurerSupport {
         return redisTemplate;
     }
 
+    @Override
     @Bean
     public CacheErrorHandler errorHandler() {
         // 异常处理，当Redis发生异常时，打印日志，但是程序正常走
@@ -145,7 +150,7 @@ public class RedisConfig extends CachingConfigurerSupport {
                 //.entryTtl(Duration.ofMinutes(60)) // 设置缓存的默认过期时间，也是使用Duration设置
                 .disableCachingNullValues(); // 不缓存空值
 
-        Set<String> cacheNames =  new HashSet<>();
+        Set<String> cacheNames = new HashSet<>();
         cacheNames.add("token");
 
         Map<String, RedisCacheConfiguration> configMap = new HashMap<>();
@@ -155,6 +160,19 @@ public class RedisConfig extends CachingConfigurerSupport {
                 .initialCacheNames(cacheNames).withInitialCacheConfigurations(configMap)
                 .build();
         return cacheManager;
+    }
+
+    @Bean
+    public RedisMessageListenerContainer redisMessageListenerContainer(RedisConnectionFactory connectionFactory) {
+        RedisMessageListenerContainer container = new RedisMessageListenerContainer();
+        container.setConnectionFactory(connectionFactory);
+        //container.addMessageListener(new RedisExpiredListener(), new PatternTopic("__keyevent@0__:expired"));
+        return container;
+    }
+
+    @Bean
+    public KeyExpirationEventMessageListener messageListener(RedisMessageListenerContainer listenerContainer) {
+        return new KeyExpirationEventMessageListener(listenerContainer);
     }
 
     @ConfigurationProperties
