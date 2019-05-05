@@ -83,16 +83,8 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         return R.success(page);
     }
 
-    /**
-     * @param role resourceIds
-     * @return com.le.base.util.R
-     * @description 添加或修改角色
-     * @author lz
-     * @date 2018/10/11 10:14
-     * @version V1.0.0
-     */
     @Override
-    public R editData(SysRole role, Long[] resourceIds) {
+    public void editData(SysRole role, Long[] resourceIds) {
         Long id = role.getId();
         if (id != null) {
             deleteRoleResource(id);
@@ -109,11 +101,10 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
                 sysRoleResourceMapper.insert(srr);
             }
         }
-        return R.success();
     }
 
     @Override
-    public R del(List<Long> ids) {
+    public void del(List<Long> ids) {
         if (CollectionUtils.isNotEmpty(ids)) {
             for (Long id : ids) {
                 deleteRoleResource(id);
@@ -121,7 +112,6 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
             }
             removeByIds(ids);
         }
-        return R.success();
     }
 
     private void delUserRole(Long roleId) {
@@ -139,5 +129,18 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Override
     public List<SysRole> findUserRole(long userId) {
         return baseMapper.findUserRole(userId);
+    }
+
+    @Override
+    public boolean exists(Long id, String role) {
+        LambdaQueryWrapper<SysRole> wrapper = new LambdaQueryWrapper<>();
+
+        if (id != null) {
+            wrapper.ne(SysRole::getId, id);
+        }
+
+        wrapper.eq(SysRole::getRole, role);
+        Integer count = baseMapper.selectCount(wrapper);
+        return count != null && count > 0;
     }
 }

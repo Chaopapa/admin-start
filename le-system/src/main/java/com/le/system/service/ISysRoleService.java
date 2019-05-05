@@ -39,14 +39,11 @@ public interface ISysRoleService extends IService<SysRole> {
     R findPage(Page<SysRole> page, SysRole search);
 
     /**
+     * 添加或修改角色
+     *
      * @param role
-     * @return com.le.base.util.R
-     * @description 添加或修改角色
-     * @author lz
-     * @date 2018/10/11 10:14
-     * @version V1.0.0
      */
-    R editData(SysRole role, Long[] resourceIds);
+    void editData(SysRole role, Long[] resourceIds);
 
     /**
      * @param ids
@@ -56,7 +53,7 @@ public interface ISysRoleService extends IService<SysRole> {
      * @date 2018/10/11 10:14
      * @version V1.0.0
      */
-    R del(List<Long> ids);
+    void del(List<Long> ids);
 
     /**
      * 查询用户角色列表
@@ -64,4 +61,13 @@ public interface ISysRoleService extends IService<SysRole> {
      * @param userId 用户ID
      */
     List<SysRole> findUserRole(long userId);
+
+    /**
+     * 查询角色标识是否重复
+     *
+     * @param id
+     * @param role
+     * @return
+     */
+    boolean exists(Long id, String role);
 }

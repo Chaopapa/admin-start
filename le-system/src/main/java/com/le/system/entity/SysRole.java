@@ -1,13 +1,11 @@
 package com.le.system.entity;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.le.core.base.SuperEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.HashSet;
-import java.util.Set;
+import javax.validation.constraints.NotEmpty;
 
 /**
  * @ClassName SysRole
@@ -24,11 +22,13 @@ public class SysRole extends SuperEntity {
     /**
      * 角色名
      */
+    @NotEmpty(message = "角色名不为能空")
     private String name;
 
     /**
-     * 角色字符串
+     * 角色标识
      */
+    @NotEmpty(message = "角色标识不为能空")
     private String role;
 
 }

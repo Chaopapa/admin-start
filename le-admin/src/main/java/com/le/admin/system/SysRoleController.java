@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -68,8 +69,30 @@ public class SysRoleController {
     @ResponseBody
     @PreAuthorize("hasAuthority('sys:role:edit')")
     @SystemLog("编辑角色信息")
-    public R edit(SysRole role, Long[] resourceIds) {
-        return sysRoleService.editData(role, resourceIds);
+    public R edit(@Valid SysRole role, Long[] resourceIds) {
+        boolean exist = sysRoleService.exists(role.getId(), role.getRole());
+
+        if (exist) {
+            return R.error("角色标识重复");
+        }
+
+        sysRoleService.editData(role, resourceIds);
+        return R.success();
+    }
+
+    /**
+     * 检查角色标识
+     *
+     * @param id   角色id
+     * @param role 角色标识
+     * @return
+     */
+    @RequestMapping(value = "/checkRole")
+    @ResponseBody
+    @PreAuthorize("hasAuthority('sys:user:edit')")
+    public R checkRole(@RequestParam(required = false) Long id, String role) {
+        boolean exist = sysRoleService.exists(id, role);
+        return R.success().putData("exist", exist);
     }
 
     /**
@@ -80,6 +103,7 @@ public class SysRoleController {
     @PreAuthorize("hasAuthority('sys:role:edit')")
     @SystemLog("删除角色")
     public R del(@RequestParam("ids") List<Long> ids) {
-        return sysRoleService.del(ids);
+        sysRoleService.del(ids);
+        return R.success();
     }
 }
