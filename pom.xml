@@ -18,6 +18,7 @@
         <module>le-component</module>
         <module>le-config</module>
         <module>le-log</module>
+        <module>le-wechat</module>
     </modules>
     <packaging>pom</packaging>
     <name>le-starter</name>
