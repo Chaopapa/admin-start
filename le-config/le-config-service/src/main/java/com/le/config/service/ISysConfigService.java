@@ -23,7 +23,6 @@ public interface ISysConfigService extends IService<SysConfig> {
      * 保存配置
      *
      * @param object
-     * @return
      */
-    R saveConfig(BaseConfig object);
+    void saveConfig(BaseConfig object);
 }

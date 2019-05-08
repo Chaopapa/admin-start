@@ -19,11 +19,6 @@
         </dependency>
         <dependency>
             <groupId>com.le</groupId>
-            <artifactId>le-config</artifactId>
-            <version>${le.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.le</groupId>
             <artifactId>le-system</artifactId>
             <version>${le.version}</version>
         </dependency>

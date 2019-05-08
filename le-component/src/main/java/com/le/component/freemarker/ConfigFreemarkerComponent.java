@@ -1,7 +1,7 @@
 package com.le.component.freemarker;
 
 import com.le.config.entity.config.CloudStorageConfig;
-import com.le.config.entity.config.CmsConfig;
+import com.le.config.entity.config.BannerConfig;
 import com.le.config.entity.config.GlobalConfig;
 import com.le.config.entity.config.SmsConfig;
 import com.le.config.service.ISysConfigService;
@@ -30,8 +30,8 @@ public class ConfigFreemarkerComponent implements TemplateMethodModelEx {
                 return configService.findConfig(GlobalConfig.class);
             case "oss":
                 return configService.findConfig(CloudStorageConfig.class);
-            case "cms":
-                return configService.findConfig(CmsConfig.class);
+            case "banner":
+                return configService.findConfig(BannerConfig.class);
             case "sms":
                 return configService.findConfig(SmsConfig.class);
             default:

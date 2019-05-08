@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
  **/
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class CmsConfig extends BaseConfig {
+public class BannerConfig extends BaseConfig {
     private static final long serialVersionUID = 6700434628666197473L;
     /**
      * 轮播数量
