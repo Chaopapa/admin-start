@@ -17,6 +17,7 @@
         <module>le-web</module>
         <module>le-component</module>
         <module>le-config</module>
+        <module>le-log</module>
     </modules>
     <packaging>pom</packaging>
     <name>le-starter</name>

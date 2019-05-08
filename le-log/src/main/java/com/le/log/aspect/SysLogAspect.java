@@ -1,9 +1,9 @@
 package com.le.log.aspect;
 
+import com.le.log.annotation.SystemLog;
 import com.le.sso.service.ISSOService;
 import com.le.system.entity.SysUser;
 import com.le.system.service.ISysLogService;
-import com.le.web.annotation.SystemLog;
 import com.le.web.util.HttpContextUtils;
 import com.le.web.util.IPUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -17,10 +17,9 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Method;
 
 /**
- * @author lz
- * @ClassName SysLogAspect
- * @description 系统日志，切面处理类
- * @Version V1.0
+ * 系统日志，切面处理类
+ *
+ * @author 严秋旺
  * @since 2018/10/9 15:30
  **/
 @Aspect
@@ -32,7 +31,7 @@ public class SysLogAspect {
     @Autowired
     private ISSOService ssoService;
 
-    @Pointcut("@annotation(com.le.web.annotation.SystemLog)")
+    @Pointcut("@annotation(com.le.log.annotation.SystemLog)")
     public void logPointCut() {
 
     }

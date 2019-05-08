@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.le.core.rest.R;
 import com.le.system.entity.SysLog;
 import com.le.system.entity.vo.SysLogSearch;
-import com.le.web.annotation.SystemLog;
 
 /**
  * @ClassName ISysLogService
@@ -24,34 +23,26 @@ public interface ISysLogService extends IService<SysLog> {
     /**
      * 同步保存日志
      *
-     * @param userId
-     * @param userName
-     * @param name
-     * @param operation
-     * @param time
+     * @param url       访问地址
+     * @param ip        访问IP
+     * @param userId    用户id
+     * @param userName  登录名
+     * @param name      用户名称
+     * @param operation 操作内容
+     * @param time      操作时长
      */
-    void syncLog(Long userId, String userName, String name, String operation, Long time);
-
-    /**
-     * 异步保存日志
-     *
-     * @param url
-     * @param ip
-     * @param systemLog 日志注解
-     * @param time      执行时间
-     */
-    void asyncLog(String url, String ip, SystemLog systemLog, Long time);
+    void syncLog(String url, String ip, Long userId, String userName, String name, String operation, Long time);
 
     /**
      * 保存日志
      *
-     * @param url
-     * @param ip
-     * @param userId
-     * @param userName
-     * @param name
-     * @param operation
-     * @param time
+     * @param url       访问地址
+     * @param ip        访问IP
+     * @param userId    用户id
+     * @param userName  登录名
+     * @param name      用户名称
+     * @param operation 操作内容
+     * @param time      操作时长
      */
     void asyncLog(String url, String ip, Long userId, String userName, String name, String operation, Long time);
 

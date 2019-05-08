@@ -32,6 +32,11 @@
             <artifactId>le-sso</artifactId>
             <version>${le.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.le</groupId>
+            <artifactId>le-log</artifactId>
+            <version>${le.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

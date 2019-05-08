@@ -3,7 +3,7 @@ package com.le.config.web;
 import com.le.config.entity.config.*;
 import com.le.config.service.ISysConfigService;
 import com.le.core.rest.R;
-import com.le.web.annotation.SystemLog;
+import com.le.log.annotation.SystemLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
