@@ -1,9 +1,7 @@
 package com.le.sso.filter;
 
 import com.le.sso.authentication.SystemUserAuthenticationToken;
-import com.le.system.entity.SysRole;
 import com.le.system.entity.SysToken;
-import com.le.system.service.ISysRoleService;
 import com.le.system.service.ISysTokenService;
 import com.le.system.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +34,6 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String method = request.getMethod();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null && authentication.isAuthenticated()) {
