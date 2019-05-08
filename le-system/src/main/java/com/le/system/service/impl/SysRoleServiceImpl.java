@@ -64,6 +64,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
      * @date 2018/10/11 10:12
      * @version V1.0.0
      */
+    @SuppressWarnings("unchecked")
     @Override
     public R findPage(Page<SysRole> pagination, SysRole search) {
         LambdaQueryWrapper<SysRole> qw = new LambdaQueryWrapper<>();
@@ -76,7 +77,6 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
             qw.like(SysRole::getRole, search.getRole());
         }
 
-        //noinspection unchecked
         qw.orderByDesc(SysRole::getCreateDate);
 
         IPage<SysRole> page = this.page(pagination, qw);
