@@ -3,13 +3,15 @@ package com.le.core.base;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 /**
  * @author lz
  * @since 2019/5/6 15:24
  **/
-public class Tree implements Serializable, Comparable{
+public class Tree implements Serializable{
+
     /**
      * value id
      */
@@ -22,7 +24,7 @@ public class Tree implements Serializable, Comparable{
     /**
      * 子节点
      */
-    private Set<Tree> children;
+    private List<Tree> children;
     /**
      * 父节点
      */
@@ -37,11 +39,11 @@ public class Tree implements Serializable, Comparable{
         this.value = value;
     }
 
-    public Set<Tree> getChildren() {
+    public List<Tree> getChildren() {
         return children;
     }
 
-    public void setChildren(Set<Tree> children) {
+    public void setChildren(List<Tree> children) {
         this.children = children;
     }
 
@@ -63,19 +65,10 @@ public class Tree implements Serializable, Comparable{
 
     public Tree(){}
 
-    public Tree(String value, String pId, String label, Set<Tree> children) {
+    public Tree(String value, String pId, String label, List<Tree> children) {
         this.value = value;
         this.pId = pId;
         this.label = label;
         this.children = children;
-    }
-
-    @Override
-    public int compareTo(Object obj) {
-        if(!(obj instanceof Tree)) {
-            throw new RuntimeException("不是CascaderNode对象");
-        }
-        Tree n =(Tree)obj;
-        return this.value.compareTo(n.getValue());
     }
 }

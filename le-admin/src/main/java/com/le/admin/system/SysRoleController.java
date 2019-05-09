@@ -94,7 +94,7 @@ public class SysRoleController {
      */
     @RequestMapping(value = "/checkRole")
     @ResponseBody
-    @PreAuthorize("hasAuthority('sys:user:edit')")
+    @PreAuthorize("hasAuthority('sys:role:edit')")
     public R checkRole(@RequestParam(required = false) Long id, String role) {
         boolean exist = sysRoleService.exists(id, role);
         return R.success().putData("exist", exist);
