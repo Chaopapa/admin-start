@@ -60,11 +60,7 @@ public class SysRoleController {
     @SystemLog("查看角色详情")
     public R detail(Long id) {
         SysRole role = sysRoleService.getById(id);
-        List<SysResource> sysResources = sysResourceService.queryByRoleId(id);
-        Set<Long> resourcesIds = new HashSet<>();
-        if(CollectionUtils.isNotEmpty(sysResources)){
-            resourcesIds = sysResources.stream().map(SysResource::getId).collect(Collectors.toSet());
-        }
+        Set<String> resourcesIds = sysResourceService.queryByRoleId(id);
         return R.success().putData("role", role).putData("resourcesIds", resourcesIds);
     }
 

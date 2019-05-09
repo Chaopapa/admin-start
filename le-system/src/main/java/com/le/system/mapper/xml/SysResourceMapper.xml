@@ -3,10 +3,9 @@
 <mapper namespace="com.le.system.mapper.SysResourceMapper">
 
     <!-- 角色id查询角色的所有权限 -->
-    <select id="queryByRoleId" parameterType="Long" resultType="com.le.system.entity.SysResource">
+    <select id="queryByRoleId" parameterType="Long" resultType="java.lang.String">
 		SELECT
-            e.id,
-            e.name
+            e.id
         FROM
             sys_role_resource r
         JOIN sys_resource e ON r.resource_id = e.id
