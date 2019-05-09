@@ -8,12 +8,10 @@ import org.springframework.context.annotation.Configuration;
 import javax.servlet.DispatcherType;
 
 /**
- * @ClassName FilterConfig
- * @Author lz
- * @Description Filter配置
- * @Date 2018/10/9 14:48
- * @Version V1.0
- **/
+ * Filter配置
+ * @author lz
+ * @since 2019/5/9 9:40
+ */
 @Configuration
 public class FilterConfig {
 

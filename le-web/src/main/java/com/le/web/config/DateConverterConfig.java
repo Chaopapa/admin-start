@@ -11,12 +11,10 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * @ClassName DateConverterConfig
- * @Author lz
- * @Description 全局handler前日期统一处理
- * @Date 2018/10/8 10:12
- * @Version V1.0
- **/
+ * 全局handler前日期统一处理
+ * @author lz
+ * @since 2019/5/9 9:40
+ */
 @Component
 public class DateConverterConfig implements Converter<String, Date> {
     private static final List<String> formarts = new ArrayList<>(4);

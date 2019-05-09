@@ -4,12 +4,10 @@ import com.le.core.exception.LEException;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * @ClassName SQLFilter
- * @Author lz
- * @Description SQLFilter 注入过滤配置類
- * @Date 2018/10/8 13:50
- * @Version V1.0
- **/
+ * 注入过滤配置類
+ * @author lz
+ * @since 2019/5/9 9:19
+ */
 public class SQLFilter {
 
     /**

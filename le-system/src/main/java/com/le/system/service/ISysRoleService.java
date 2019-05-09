@@ -18,23 +18,11 @@ import java.util.Map;
  **/
 public interface ISysRoleService extends IService<SysRole> {
 
-    /**
-     * @param userId 用户id
-     * @return java.lang.String
-     * @description 通过userId 查找角色
-     * @author lz
-     * @date 2018/10/10 10:59
-     * @version V1.0.0
-     */
-    Map<String, SysUserRole> findUserRoleMap(Long userId);
 
     /**
-     * @param page, name 角色名
-     * @return com.le.base.util.R
-     * @description 后台角色分页
+     * 通过userId 后台角色分页
      * @author lz
-     * @date 2018/10/11 10:12
-     * @version V1.0.0
+     * @since 2019/5/9 9:19
      */
     R findPage(Page<SysRole> page, SysRole search);
 
@@ -45,13 +33,11 @@ public interface ISysRoleService extends IService<SysRole> {
      */
     void editData(SysRole role, Long[] resourceIds);
 
+
     /**
-     * @param ids
-     * @return com.le.base.util.R
-     * @description 删除角色
-     * @author lz
-     * @date 2018/10/11 10:14
-     * @version V1.0.0
+     * 删除角色
+     *
+     * @param ids 用户Ids
      */
     void del(List<Long> ids);
 
@@ -67,7 +53,6 @@ public interface ISysRoleService extends IService<SysRole> {
      *
      * @param id
      * @param role
-     * @return
      */
     boolean exists(Long id, String role);
 }

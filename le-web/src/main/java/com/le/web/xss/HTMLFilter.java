@@ -8,12 +8,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * @ClassName HTMLFilter
- * @Author lz
- * @Description HTMLFilter xss配置類
- * @Date 2018/10/8 13:50
- * @Version V1.0
- **/
+ * HTMLFilter xss配置類
+ * @author lz
+ * @since 2019/5/9 9:19
+ */
 public final class HTMLFilter {
 
     /** regex flag union representing /si modifiers in php **/

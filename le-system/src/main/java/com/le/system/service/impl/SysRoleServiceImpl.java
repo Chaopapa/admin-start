@@ -18,18 +18,17 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * @ClassName SysRoleServiceImpl
- * @Author lz
- * @Description 角色接口实现层
- * @Date 2018/10/9 11:33
- * @Version V1.0
- **/
+ * 角色接口实现层
+ * @author lz
+ * @since 2019/5/9 9:19
+ */
 @Service
 public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> implements ISysRoleService {
 
@@ -39,30 +38,11 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Autowired
     private SysRoleResourceMapper sysRoleResourceMapper;
 
-    /**
-     * @param userId 用户id
-     * @return com.le.admin.entity.SysRole
-     * @description 通过userId 查找角色
-     * @author lz
-     * @date 2018/10/10 10:59
-     * @version V1.0.0
-     */
-    @Override
-    public Map<String, SysUserRole> findUserRoleMap(Long userId) {
-        LambdaQueryWrapper<SysUserRole> lw = new QueryWrapper<SysUserRole>().lambda().eq(SysUserRole::getUserId, userId);
-        List<SysUserRole> sysUserRoles = sysUserRoleMapper.selectList(lw);
-        Map<String, SysUserRole> map = new HashMap<>();
-        sysUserRoles.forEach(userRole -> map.put(userRole.getRoleId().toString(), userRole));
-        return map;
-    }
 
     /**
-     * @param pagination, name 角色名
-     * @return com.le.base.util.R
-     * @description 后台角色分页
+     * 通过userId 后台角色分页
      * @author lz
-     * @date 2018/10/11 10:12
-     * @version V1.0.0
+     * @since 2019/5/9 9:19
      */
     @SuppressWarnings("unchecked")
     @Override
@@ -83,7 +63,15 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         return R.success(page);
     }
 
+    /**
+     * 添加或修改角色
+     *
+     * @author lz
+     * @since 2019/5/9 9:19
+     * @param role resourceIds
+     */
     @Override
+    @Transactional
     public void editData(SysRole role, Long[] resourceIds) {
         Long id = role.getId();
         if (id != null) {
@@ -103,7 +91,13 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         }
     }
 
+    /**
+     * 删除角色
+     *
+     * @param ids 用户Ids
+     */
     @Override
+    @Transactional
     public void del(List<Long> ids) {
         if (CollectionUtils.isNotEmpty(ids)) {
             for (Long id : ids) {
@@ -126,11 +120,22 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         sysRoleResourceMapper.delete(qw);
     }
 
+    /**
+     * 查询用户角色列表
+     *
+     * @param userId 用户ID
+     */
     @Override
     public List<SysRole> findUserRole(long userId) {
         return baseMapper.findUserRole(userId);
     }
 
+    /**
+     * 查询角色标识是否重复
+     *
+     * @param id
+     * @param role
+     */
     @Override
     public boolean exists(Long id, String role) {
         LambdaQueryWrapper<SysRole> wrapper = new LambdaQueryWrapper<>();

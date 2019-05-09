@@ -15,12 +15,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * @ClassName XssHttpServletRequestWrapper
- * @Author lz
- * @Description XSS过滤处理
- * @Date 2018/10/8 13:50
- * @Version V1.0
- **/
+ * XSS过滤处理
+ * @author lz
+ * @since 2019/5/9 9:19
+ */
 public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
     //没被包装过的HttpServletRequest（特殊场景，需要自己过滤）
     HttpServletRequest orgRequest;

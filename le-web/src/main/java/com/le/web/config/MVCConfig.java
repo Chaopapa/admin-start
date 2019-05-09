@@ -34,12 +34,10 @@ import java.util.TimeZone;
 
 
 /**
- * @ClassName CommonInterceptorConfig
- * @Author lz
- * @Description 通用拦截器 获取base路径 配置 资源配置
- * @Date 2018/9/30 10:03
- * @Version V1.0
- **/
+ * 通用拦截器 获取base路径 配置 资源配置
+ * @author lz
+ * @since 2019/5/9 9:40
+ */
 @Configuration
 @EnableWebMvc
 @ServletComponentScan

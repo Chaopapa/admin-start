@@ -8,12 +8,10 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
- * @ClassName SysResourceMapper
- * @Author lz
- * @Description 资源Mapper
- * @Date 2018/10/9 11:35
- * @Version V1.0
- **/
+ * 资源Mapper
+ * @author lz
+ * @since 2019/5/9 9:19
+ */
 public interface SysResourceMapper extends BaseMapper<SysResource> {
 
     List<SysResource> queryByRoleId(Long roleId);

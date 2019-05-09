@@ -2,7 +2,7 @@ package com.le.system.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.le.core.base.Tree;
-import com.le.core.rest.R;
+import com.le.core.base.TreeNode;
 import com.le.system.entity.SysResource;
 import com.le.system.entity.SysUser;
 
@@ -10,12 +10,10 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * @ClassName ISysUserService
- * @Author lz
- * @Description 资源接口层
- * @Date 2018/10/9 11:32
- * @Version V1.0
- **/
+ * 资源接口层
+ * @author lz
+ * @since 2019/5/9 9:40
+ */
 public interface ISysResourceService extends IService<SysResource> {
 
     /**
@@ -24,60 +22,59 @@ public interface ISysResourceService extends IService<SysResource> {
     Long ROOT_ID = 0L;
 
     /**
-     * @param sysResource
-     * @return com.le.base.util.R
-     * @description 添加或修改资源
+     * 添加或修改资源
      * @author lz
-     * @date 2018/10/11 10:14
-     * @version V1.0.0
+     * @since 2019/5/9 9:19
      */
-    R editData(SysResource sysResource);
+    void editData(SysResource sysResource);
 
     /**
-     * @param
-     * @return Set<Tree>
-     * @description 获取资源数据树
+     * 获取资源下拉数据树
      * @author lz
-     * @date 2018/10/11 10:14
-     * @version V1.0.0
+     * @since 2019/5/9 9:19
      */
-    Set<Tree> tree();
+    Set<TreeNode> tree();
 
     /**
-     * @param
-     * @return List<SysResource>
-     * @description 角色id查询角色的所有权限
+     * 角色id查询角色的所有权限
      * @author lz
-     * @date 2018/10/11 10:14
-     * @version V1.0.0
+     * @since 2019/5/9 9:19
      */
     List<SysResource> queryByRoleId(Long roleId);
 
     /**
-     * @param permission
-     * @return boolean
-     * @description 校验资源是否存在
+     * 校验资源权限是否存在
      * @author lz
-     * @date 2018/10/11 17:11
-     * @version V1.0.0
+     * @since 2019/5/9 9:19
      */
-    boolean permissionExists(String permission);
+    boolean exists(Long id, String permission);
 
     /**
-     * @param id
-     * @return boolean
-     * @description 删除资源
+     * 删除资源
      * @author lz
-     * @date 2018/10/11 17:11
-     * @version V1.0.0
+     * @since 2019/5/9 9:19
      */
-    R del(Long id);
+    void del(Long id);
 
     /**
-     * 获取用户菜单
-     *
-     * @param user 查询的用户
-     * @return
+     * 获取父资源数据树
+     * @author lz
+     * @since 2019/5/9 9:19
      */
-    List<SysResource> findUserTree(SysUser user);
+    Set<Tree> parentTree();
+
+    /**
+     * 校验父资源是否存在
+     * @author lz
+     * @since 2019/5/9 9:19
+     */
+    boolean parentIsExists(Long id);
+
+    /**
+     * 获取vue动态菜单接口
+     * @author lz
+     * @since 2019/5/9 9:19
+     */
+    List<SysResource> menuTree();
+
 }
