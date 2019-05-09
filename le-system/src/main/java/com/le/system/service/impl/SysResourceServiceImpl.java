@@ -54,12 +54,12 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
     }
 
     /**
-     * 获取资源下拉数据树
+     * 获取资源管理数据树
      * @author lz
      * @since 2019/5/9 9:19
      */
     @Override
-    public Set<TreeNode> tree() {
+    public List<TreeNode> tree() {
         QueryWrapper<SysResource> qw = new QueryWrapper<>();
         qw.orderByAsc("seq");
         List<SysResource> sysResources = this.list(qw);
@@ -67,11 +67,12 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
         return createTree(0L, map);
     }
 
-    private Set<TreeNode> createTree(Long pid, Map<Long, List<SysResource>> map) {
-        return Optional.ofNullable(map.get(pid)).orElseGet(() -> new ArrayList<>()).stream().filter(x -> x.getParentId().equals(pid)).map(x -> {
+    private List<TreeNode> createTree(Long pid, Map<Long, List<SysResource>> map) {
+        List<TreeNode> trees = Optional.ofNullable(map.get(pid)).orElseGet(() -> new ArrayList<>()).stream().filter(x -> x.getParentId().equals(pid)).map(x -> {
             TreeNode treeNode = new TreeNode(String.valueOf(x.getId()), String.valueOf(x.getParentId()), x.getName(), x.getParentPath(), createTree(x.getId(), map));
             return treeNode;
-        }).collect(Collectors.toSet());
+        }).collect(Collectors.toList());
+        return trees;
     }
 
     /**
