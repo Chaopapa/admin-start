@@ -16,29 +16,9 @@
             <artifactId>le-core</artifactId>
             <version>${le.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.le</groupId>
-            <artifactId>le-web</artifactId>
-            <version>${le.version}</version>
-        </dependency>
     </dependencies>
 
     <build>
-        <finalName>le-single</finalName>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>

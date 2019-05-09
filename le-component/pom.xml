@@ -24,7 +24,7 @@
         </dependency>
         <dependency>
             <groupId>com.le</groupId>
-            <artifactId>le-config</artifactId>
+            <artifactId>le-config-service</artifactId>
             <version>${le.version}</version>
         </dependency>
 

@@ -5,7 +5,7 @@ import com.le.core.base.TreeNode;
 import com.le.core.rest.R;
 import com.le.system.entity.SysResource;
 import com.le.system.service.ISysResourceService;
-import com.le.web.annotation.SystemLog;
+import com.le.log.annotation.SystemLog;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;

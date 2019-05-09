@@ -1,5 +1,6 @@
 package com.le.sso.config;
 
+import com.le.sso.filter.CorsFilter;
 import com.le.sso.filter.TokenAuthenticationFilter;
 import com.le.sso.handler.AuthenticationHandler;
 import com.le.sso.provider.SystemUserAuthenticationProvider;
@@ -30,6 +31,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private SystemUserAuthenticationProvider systemUserAuthenticationProvider;
     @Autowired
     private TokenAuthenticationFilter tokenAuthenticationFilter;
+    @Autowired
+    private CorsFilter corsFilter;
 
     @Bean
     @Override
@@ -51,6 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .accessDeniedHandler(accessDeniedHandler)  //由全局异常处理
                 .and()
                 .authenticationProvider(systemUserAuthenticationProvider)
+                .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .headers().cacheControl();
 

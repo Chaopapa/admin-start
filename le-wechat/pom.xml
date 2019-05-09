@@ -9,11 +9,13 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>le-config</artifactId>
+    <artifactId>le-wechat</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>le-config-web</module>
-        <module>le-config-service</module>
+        <module>le-wechat-mp</module>
+        <module>le-wechat-miniapp</module>
+        <module>le-wechat-common</module>
     </modules>
+
 
 </project>

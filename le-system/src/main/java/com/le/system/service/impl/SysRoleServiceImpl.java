@@ -44,6 +44,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
      * @author lz
      * @since 2019/5/9 9:19
      */
+    @SuppressWarnings("unchecked")
     @Override
     public R findPage(Page<SysRole> pagination, SysRole search) {
         LambdaQueryWrapper<SysRole> qw = new LambdaQueryWrapper<>();

@@ -21,6 +21,11 @@
             <artifactId>le-sso</artifactId>
             <version>${le.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.le</groupId>
+            <artifactId>le-config-web</artifactId>
+            <version>${le.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

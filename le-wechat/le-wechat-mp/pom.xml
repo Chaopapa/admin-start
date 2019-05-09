@@ -3,17 +3,20 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>le-starter</artifactId>
+        <artifactId>le-wechat</artifactId>
         <groupId>com.le</groupId>
         <version>1.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>le-config</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>le-config-web</module>
-        <module>le-config-service</module>
-    </modules>
+    <artifactId>le-wechat-mp</artifactId>
+    <description>公众号</description>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.le</groupId>
+            <artifactId>le-wechat-common</artifactId>
+            <version>${le.version}</version>
+        </dependency>
+    </dependencies>
 </project>

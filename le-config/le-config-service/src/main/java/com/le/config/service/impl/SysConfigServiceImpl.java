@@ -41,7 +41,7 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
 
     @Override
     @CacheEvict(cacheNames = "config", key = "#object.class.name")
-    public R saveConfig(BaseConfig object) {
+    public void saveConfig(BaseConfig object) {
         String paramKey = object.getClass().getName();
         String paramValue = JsonUtils.toJson(object);
 
@@ -55,7 +55,5 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
             sysConfig.setParamKey(paramKey);
             baseMapper.insert(sysConfig);
         }
-
-        return R.success();
     }
 }

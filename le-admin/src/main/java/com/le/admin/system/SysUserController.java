@@ -2,13 +2,12 @@ package com.le.admin.system;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.le.core.rest.R;
+import com.le.log.annotation.SystemLog;
 import com.le.system.entity.SysRole;
 import com.le.system.entity.SysUser;
-import com.le.system.entity.SysUserRole;
 import com.le.system.entity.vo.SysUserVo;
 import com.le.system.service.ISysRoleService;
 import com.le.system.service.ISysUserService;
-import com.le.web.annotation.SystemLog;
 import com.le.web.util.HttpContextUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -20,9 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 /**

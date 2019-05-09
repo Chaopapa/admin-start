@@ -9,9 +9,14 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>le-admin</artifactId>
+    <artifactId>le-log</artifactId>
 
     <dependencies>
+        <dependency>
+            <groupId>com.le</groupId>
+            <artifactId>le-core</artifactId>
+            <version>${le.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.le</groupId>
             <artifactId>le-web</artifactId>
@@ -24,19 +29,16 @@
         </dependency>
         <dependency>
             <groupId>com.le</groupId>
-            <artifactId>le-component</artifactId>
-            <version>${le.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.le</groupId>
             <artifactId>le-sso</artifactId>
             <version>${le.version}</version>
         </dependency>
+
+
         <dependency>
-            <groupId>com.le</groupId>
-            <artifactId>le-log</artifactId>
-            <version>${le.version}</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
+
     </dependencies>
 
 </project>
