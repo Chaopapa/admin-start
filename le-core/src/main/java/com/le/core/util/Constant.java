@@ -25,6 +25,10 @@ public final class Constant {
      * 超级用户id
      */
     public static final Long SUPER_ADMIN = 1L;
+    /**
+     * 后台管理角色
+     */
+    public static final String ROLE_ADMIN = "role.admin";
 
 
 }

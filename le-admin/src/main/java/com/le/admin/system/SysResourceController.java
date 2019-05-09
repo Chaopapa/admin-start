@@ -37,7 +37,7 @@ public class SysResourceController {
      * @author lz
      */
     @RequestMapping("/manageData")
-    @PreAuthorize("hasAuthority('sys:resource:view')")
+    @PreAuthorize("hasPermission(null,'sys:resource:view')")
     @SystemLog("查看资源详情")
     public R detail(Long id) {
         SysResource resource = sysResourceService.getById(id);
@@ -50,7 +50,7 @@ public class SysResourceController {
      * @since 2019/5/9 9:19
      */
     @RequestMapping("/edit")
-    @PreAuthorize("hasAuthority('sys:resource:edit')")
+    @PreAuthorize("hasPermission(null,'sys:resource:edit')")
     @SystemLog("编辑资源信息")
     public R edit(@Valid SysResource sysResource) {
         boolean exist = sysResourceService.exists(sysResource.getId(), sysResource.getPermission());
@@ -100,7 +100,7 @@ public class SysResourceController {
      * @since 2019/5/9 9:19
      */
     @RequestMapping("/checkPermission")
-    @PreAuthorize("hasAuthority('sys:resource:edit')")
+    @PreAuthorize("hasPermission(null,'sys:resource:edit')")
     public R checkPermission(Long id, String permission) {
         boolean exist = sysResourceService.exists(id, permission);
         return R.success().putData("exist", exist);
@@ -112,7 +112,7 @@ public class SysResourceController {
      * @since 2019/5/9 9:19
      */
     @RequestMapping("/del")
-    @PreAuthorize("hasAuthority('sys:resource:edit')")
+    @PreAuthorize("hasPermission(null,'sys:resource:edit')")
     @SystemLog("删除资源")
     public R del(Long id) {
         boolean exist = sysResourceService.parentIsExists(id);

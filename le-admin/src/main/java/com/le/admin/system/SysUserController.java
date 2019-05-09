@@ -46,7 +46,7 @@ public class SysUserController {
      */
     @RequestMapping("/page")
     @ResponseBody
-    @PreAuthorize("hasAuthority('sys:user:view')")
+    @PreAuthorize("hasPermission(null,'sys:user:view')")
     @SystemLog("查看用户列表")
     public R page(SysUser search) {
         Page<SysUserVo> page = HttpContextUtils.getPage();
@@ -57,7 +57,7 @@ public class SysUserController {
      * 用户信息页
      */
     @RequestMapping("/detail")
-    @PreAuthorize("hasAuthority('sys:user:view')")
+    @PreAuthorize("hasPermission(null,'sys:user:view')")
     @SystemLog("查看用户详情")
     public R detail(Long id) {
         SysUser user = sysUserService.getById(id);
@@ -71,7 +71,7 @@ public class SysUserController {
      * 角色列表
      */
     @RequestMapping("/roles")
-    @PreAuthorize("hasAuthority('sys:user:view')")
+    @PreAuthorize("hasPermission(null,'sys:user:view')")
     public R roles(Long id) {
         List<SysRole> roles = sysRoleService.list(null);
         return R.success()
@@ -85,7 +85,7 @@ public class SysUserController {
      */
     @RequestMapping("/edit")
     @ResponseBody
-    @PreAuthorize("hasAuthority('sys:user:edit')")
+    @PreAuthorize("hasPermission(null,'sys:user:edit')")
     @SystemLog("编辑用户信息")
     public R edit(@Valid SysUser user, @RequestParam(value = "roleId", required = false) List<Long> roles) {
         if (user.getId() == null && StringUtils.isBlank(user.getPassword())) {
@@ -107,7 +107,7 @@ public class SysUserController {
      */
     @RequestMapping(value = "/reset")
     @ResponseBody
-    @PreAuthorize("hasAuthority('sys:user:edit')")
+    @PreAuthorize("hasPermission(null,'sys:user:edit')")
     @SystemLog("重置用户密码")
     public R reset(Long id) {
         sysUserService.resetPassword(id);
@@ -123,7 +123,7 @@ public class SysUserController {
      */
     @RequestMapping(value = "/checkUserName")
     @ResponseBody
-    @PreAuthorize("hasAuthority('sys:user:edit')")
+    @PreAuthorize("hasPermission(null,'sys:user:edit')")
     public R checkUserName(@RequestParam(required = false) Long id, String username) {
         boolean exist = sysUserService.usernameExists(id, username);
         return R.success().putData("exist", exist);
@@ -134,7 +134,7 @@ public class SysUserController {
      */
     @RequestMapping("/del")
     @ResponseBody
-    @PreAuthorize("hasAuthority('sys:user:edit')")
+    @PreAuthorize("hasPermission(null,'sys:user:edit')")
     @SystemLog("删除用户")
     public R del(@RequestParam(value = "ids") List<Long> ids) {
         for (Long id : ids) {

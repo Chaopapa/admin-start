@@ -45,7 +45,7 @@ public class SysRoleController {
      */
     @RequestMapping("/page")
     @ResponseBody
-    @PreAuthorize("hasAuthority('sys:role:view')")
+    @PreAuthorize("hasPermission(null,'sys:role:view')")
     @SystemLog("查看角色列表")
     public R page(SysRole search) {
         Page<SysRole> page = HttpContextUtils.getPage();
@@ -56,7 +56,7 @@ public class SysRoleController {
      * 跳转角色信息页
      */
     @RequestMapping("/detail")
-    @PreAuthorize("hasAuthority('sys:role:view')")
+    @PreAuthorize("hasPermission(null,'sys:role:view')")
     @SystemLog("查看角色详情")
     public R detail(Long id) {
         SysRole role = sysRoleService.getById(id);
@@ -73,7 +73,7 @@ public class SysRoleController {
      */
     @RequestMapping("/edit")
     @ResponseBody
-    @PreAuthorize("hasAuthority('sys:role:edit')")
+    @PreAuthorize("hasPermission(null,'sys:role:edit')")
     @SystemLog("编辑角色信息")
     public R edit(@Valid SysRole role, Long[] resourceIds) {
         boolean exist = sysRoleService.exists(role.getId(), role.getRole());
@@ -94,7 +94,7 @@ public class SysRoleController {
      */
     @RequestMapping(value = "/checkRole")
     @ResponseBody
-    @PreAuthorize("hasAuthority('sys:user:edit')")
+    @PreAuthorize("hasPermission(null,'sys:user:edit')")
     public R checkRole(@RequestParam(required = false) Long id, String role) {
         boolean exist = sysRoleService.exists(id, role);
         return R.success().putData("exist", exist);
@@ -105,7 +105,7 @@ public class SysRoleController {
      */
     @RequestMapping("/del")
     @ResponseBody
-    @PreAuthorize("hasAuthority('sys:role:edit')")
+    @PreAuthorize("hasPermission(null,'sys:role:edit')")
     @SystemLog("删除角色")
     public R del(@RequestParam("ids") List<Long> ids) {
         sysRoleService.del(ids);

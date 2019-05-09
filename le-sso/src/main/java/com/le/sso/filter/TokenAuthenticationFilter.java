@@ -1,7 +1,9 @@
 package com.le.sso.filter;
 
+import com.le.core.util.Constant;
 import com.le.sso.authentication.SystemUserAuthenticationToken;
 import com.le.system.entity.SysToken;
+import com.le.system.entity.enums.TokenType;
 import com.le.system.service.ISysTokenService;
 import com.le.system.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +62,10 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
             for (String role : roles) {
                 authorities.add(new SimpleGrantedAuthority(role));
+            }
+
+            if (sysToken.getTokenType() == TokenType.ADMIN) {
+                authorities.add(new SimpleGrantedAuthority(Constant.ROLE_ADMIN));
             }
 
             SystemUserAuthenticationToken authenticationToken = new SystemUserAuthenticationToken(sysToken.getUserId(), null, authorities);
