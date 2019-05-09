@@ -61,7 +61,7 @@ public interface ISysResourceService extends IService<SysResource> {
      * @author lz
      * @since 2019/5/9 9:19
      */
-    Set<Tree> parentTree();
+    List<Tree> parentTree();
 
     /**
      * 校验父资源是否存在

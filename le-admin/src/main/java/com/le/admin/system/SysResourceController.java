@@ -90,7 +90,7 @@ public class SysResourceController {
      */
     @RequestMapping("/parentTree")
     public R parentTree() {
-        Set<Tree> trees = sysResourceService.parentTree();
+        List<Tree> trees = sysResourceService.parentTree();
         return R.success().putData("parentTrees", trees);
     }
 
