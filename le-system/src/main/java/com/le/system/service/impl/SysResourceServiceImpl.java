@@ -54,12 +54,12 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
     }
 
     /**
-     * 获取资源下拉数据树
+     * 获取资源管理数据树
      * @author lz
      * @since 2019/5/9 9:19
      */
     @Override
-    public Set<TreeNode> tree() {
+    public List<TreeNode> tree() {
         QueryWrapper<SysResource> qw = new QueryWrapper<>();
         qw.orderByAsc("seq");
         List<SysResource> sysResources = this.list(qw);
@@ -67,11 +67,12 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
         return createTree(0L, map);
     }
 
-    private Set<TreeNode> createTree(Long pid, Map<Long, List<SysResource>> map) {
-        return Optional.ofNullable(map.get(pid)).orElseGet(() -> new ArrayList<>()).stream().filter(x -> x.getParentId().equals(pid)).map(x -> {
+    private List<TreeNode> createTree(Long pid, Map<Long, List<SysResource>> map) {
+        List<TreeNode> trees = Optional.ofNullable(map.get(pid)).orElseGet(() -> new ArrayList<>()).stream().filter(x -> x.getParentId().equals(pid)).map(x -> {
             TreeNode treeNode = new TreeNode(String.valueOf(x.getId()), String.valueOf(x.getParentId()), x.getName(), x.getParentPath(), createTree(x.getId(), map));
             return treeNode;
-        }).collect(Collectors.toSet());
+        }).collect(Collectors.toList());
+        return trees;
     }
 
     /**
@@ -80,7 +81,7 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
      * @since 2019/5/9 9:19
      */
     @Override
-    public List<SysResource> queryByRoleId(Long roleId) {
+    public Set<String> queryByRoleId(Long roleId) {
         return baseMapper.queryByRoleId(roleId);
     }
 
@@ -164,26 +165,26 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
      * @since 2019/5/9 9:19
      */
     @Override
-    public Set<Tree> parentTree() {
+    public List<Tree> parentTree() {
         QueryWrapper<SysResource> qw = new QueryWrapper<>();
         qw.eq("type",ResourceType.MENU );
         qw.orderByAsc("deep", "seq");
         List<SysResource> sysResources = this.list(qw);
         Map<Long, List<SysResource>> map = sysResources.stream().collect(Collectors.groupingBy(SysResource::getParentId));
-        SortedSet<Tree> treeList = new TreeSet<>();
+        List<Tree> treeList = new ArrayList<>();
         Tree node = new Tree("0", "0", "无",null);
         treeList.add(node);
-        treeList.addAll(createCascaderNodeTree(0L, map));
+        treeList.addAll(createTreeNode(0L, map));
         return treeList;
     }
 
-    private Set<Tree> createCascaderNodeTree(Long pid, Map<Long, List<SysResource>> map) {
-        Set<Tree> trees = Optional.ofNullable(
+    private List<Tree> createTreeNode(Long pid, Map<Long, List<SysResource>> map) {
+        List<Tree> trees = Optional.ofNullable(
                 map.get(pid)).orElseGet(() -> new ArrayList<>()).stream().filter( x -> x.getParentId().equals(pid)).map( x -> {
-            Tree cascaderNode = new Tree(String.valueOf(x.getId()),
+            Tree treeNode = new Tree(String.valueOf(x.getId()),
                     String.valueOf(x.getParentId()), x.getName(),
-                    createCascaderNodeTree(x.getId(), map));
-            return cascaderNode;}).collect(Collectors.toSet());
+                    createTreeNode(x.getId(), map));
+            return treeNode;}).collect(Collectors.toList());
         return trees;
     }
 

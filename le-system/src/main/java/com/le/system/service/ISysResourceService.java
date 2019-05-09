@@ -29,18 +29,18 @@ public interface ISysResourceService extends IService<SysResource> {
     void editData(SysResource sysResource);
 
     /**
-     * 获取资源下拉数据树
+     * 获取资源管理数据树
      * @author lz
      * @since 2019/5/9 9:19
      */
-    Set<TreeNode> tree();
+    List<TreeNode> tree();
 
     /**
      * 角色id查询角色的所有权限
      * @author lz
      * @since 2019/5/9 9:19
      */
-    List<SysResource> queryByRoleId(Long roleId);
+    Set<String> queryByRoleId(Long roleId);
 
     /**
      * 校验资源权限是否存在
@@ -61,7 +61,7 @@ public interface ISysResourceService extends IService<SysResource> {
      * @author lz
      * @since 2019/5/9 9:19
      */
-    Set<Tree> parentTree();
+    List<Tree> parentTree();
 
     /**
      * 校验父资源是否存在

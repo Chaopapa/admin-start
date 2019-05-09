@@ -73,13 +73,13 @@ public class SysResourceController {
     }
 
     /**
-     * 获取资源下拉数据树
+     * 获取资源管理数据树
      * @author lz
      * @since 2019/5/9 9:19
      */
     @RequestMapping("/tree")
     public R permissionTree() {
-        Set<TreeNode> trees = sysResourceService.tree();
+        List<TreeNode> trees = sysResourceService.tree();
         return R.success().putData("trees", trees);
     }
 
@@ -90,7 +90,7 @@ public class SysResourceController {
      */
     @RequestMapping("/parentTree")
     public R parentTree() {
-        Set<Tree> trees = sysResourceService.parentTree();
+        List<Tree> trees = sysResourceService.parentTree();
         return R.success().putData("parentTrees", trees);
     }
 

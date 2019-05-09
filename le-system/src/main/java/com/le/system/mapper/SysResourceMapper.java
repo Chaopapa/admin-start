@@ -6,6 +6,7 @@ import com.le.system.entity.SysUser;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * 资源Mapper
@@ -14,7 +15,7 @@ import java.util.List;
  */
 public interface SysResourceMapper extends BaseMapper<SysResource> {
 
-    List<SysResource> queryByRoleId(Long roleId);
+    Set<String> queryByRoleId(Long roleId);
 
     List<SysResource> findUserResourceList(@Param("user") SysUser user);
 }

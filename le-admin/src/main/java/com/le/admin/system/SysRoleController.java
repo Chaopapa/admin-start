@@ -60,11 +60,7 @@ public class SysRoleController {
     @SystemLog("查看角色详情")
     public R detail(Long id) {
         SysRole role = sysRoleService.getById(id);
-        List<SysResource> sysResources = sysResourceService.queryByRoleId(id);
-        Set<Long> resourcesIds = new HashSet<>();
-        if(CollectionUtils.isNotEmpty(sysResources)){
-            resourcesIds = sysResources.stream().map(SysResource::getId).collect(Collectors.toSet());
-        }
+        Set<String> resourcesIds = sysResourceService.queryByRoleId(id);
         return R.success().putData("role", role).putData("resourcesIds", resourcesIds);
     }
 
@@ -94,7 +90,7 @@ public class SysRoleController {
      */
     @RequestMapping(value = "/checkRole")
     @ResponseBody
-    @PreAuthorize("hasPermission(null,'sys:user:edit')")
+    @PreAuthorize("hasPermission(null,'sys:role:edit')")
     public R checkRole(@RequestParam(required = false) Long id, String role) {
         boolean exist = sysRoleService.exists(id, role);
         return R.success().putData("exist", exist);

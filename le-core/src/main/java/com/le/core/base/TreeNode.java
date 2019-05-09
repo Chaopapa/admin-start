@@ -2,6 +2,7 @@ package com.le.core.base;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -22,7 +23,7 @@ public class TreeNode implements java.io.Serializable{
      * 子节点
      */
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Set<TreeNode> children;
+    private List<TreeNode> children;
     /**
      * 父节点
      */
@@ -41,11 +42,11 @@ public class TreeNode implements java.io.Serializable{
         this.id = id;
     }
 
-    public Set<TreeNode> getChildren() {
+    public List<TreeNode> getChildren() {
         return children;
     }
 
-    public void setChildren(Set<TreeNode> children) {
+    public void setChildren(List<TreeNode> children) {
         this.children = children;
     }
 
@@ -75,14 +76,14 @@ public class TreeNode implements java.io.Serializable{
 
     public TreeNode(){}
 
-    public TreeNode(String id, String pId, String label, Set<TreeNode> children) {
+    public TreeNode(String id, String pId, String label, List<TreeNode> children) {
         this.id = id;
         this.pId = pId;
         this.label = label;
         this.children = children;
     }
 
-    public TreeNode(String id, String pId, String label, String parentPath, Set<TreeNode> children) {
+    public TreeNode(String id, String pId, String label, String parentPath, List<TreeNode> children) {
         this.id = id;
         this.pId = pId;
         this.label = label;
