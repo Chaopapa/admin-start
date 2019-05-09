@@ -9,16 +9,16 @@ import com.le.system.entity.enums.ResourceType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
- * @ClassName SysResource
- * @Author lz
- * @Description 资源表
- * @Date 2018/10/9 11:42
- * @Version V1.0
- **/
+ * 资源表
+ * @author lz
+ * @since 2019/5/9 9:19
+ */
 @Data
 @TableName("sys_resource")
 @EqualsAndHashCode(callSuper = false)
@@ -34,6 +34,7 @@ public class SysResource extends SuperEntity {
     /**
      * 菜单名称
      */
+    @NotBlank(message = "菜单名称不能为空")
     private String name;
 
     /**
@@ -64,6 +65,16 @@ public class SysResource extends SuperEntity {
      * 深度
      */
     private Integer deep;
+
+    /**
+     * 前台路由
+     */
+    private String path;
+
+    /**
+     * 父级 广度
+     */
+    private String parentPath;
 
     /**
      * 子级菜单

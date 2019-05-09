@@ -2,12 +2,14 @@ package com.le.admin.system;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.le.core.rest.R;
+import com.le.system.entity.SysResource;
 import com.le.system.entity.SysRole;
 import com.le.system.service.ISysResourceService;
 import com.le.system.service.ISysRoleService;
 import com.le.web.annotation.SystemLog;
 import com.le.web.util.HttpContextUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +18,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * 角色后台管理
@@ -55,11 +60,12 @@ public class SysRoleController {
     @SystemLog("查看角色详情")
     public R detail(Long id) {
         SysRole role = sysRoleService.getById(id);
-
-//            List<SysResource> sysResources = sysResourceService.queryByRoleId(id);
-//            String resources = JsonUtils.toJson(sysResources);
-//            model.put("resources", resources);
-        return R.success().putData("role", role);
+        List<SysResource> sysResources = sysResourceService.queryByRoleId(id);
+        Set<Long> resourcesIds = new HashSet<>();
+        if(CollectionUtils.isNotEmpty(sysResources)){
+            resourcesIds = sysResources.stream().map(SysResource::getId).collect(Collectors.toSet());
+        }
+        return R.success().putData("role", role).putData("resourcesIds", resourcesIds);
     }
 
     /**
@@ -85,7 +91,6 @@ public class SysRoleController {
      *
      * @param id   角色id
      * @param role 角色标识
-     * @return
      */
     @RequestMapping(value = "/checkRole")
     @ResponseBody

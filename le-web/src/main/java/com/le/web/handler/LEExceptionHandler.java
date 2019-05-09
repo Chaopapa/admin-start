@@ -4,12 +4,17 @@ import com.le.core.exception.LEException;
 import com.le.core.rest.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -102,4 +107,33 @@ public class LEExceptionHandler {
         return R.error(e.getMessage());
     }
 
+    /**
+     * 404-NOT_FOUND
+     */
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public R handlerNotFoundException(NoHandlerFoundException e){
+        log.error("请求的资源不可用",e);
+        return new R().error("请求的资源不可用");
+    }
+    /*
+     * 405 - method Not allowed
+     * HttpRequestMethodNotSupportedException 是ServletException 的子类，需要Servlet API 支持
+     */
+    @ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+    @ExceptionHandler({ HttpMediaTypeNotSupportedException.class })
+    public R handleHttpMediaTypeNotSupportedException(Exception e) {
+        log.error("内容类型不支持...", e);
+        return new R().error("内容类型不支持");
+    }
+
+    /**
+     * 415-Unsupported Media Type.HttpMediaTypeNotSupportedException是ServletException的子类，需要Serlet API支持
+     */
+    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public R handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
+        log.error("不合法的请求方法...", e);
+        return new R().error("不合法的请求方法");
+    }
 }

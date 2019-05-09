@@ -1,29 +1,29 @@
 package com.le.admin.system;
 
 import com.le.core.base.Tree;
+import com.le.core.base.TreeNode;
 import com.le.core.rest.R;
 import com.le.system.entity.SysResource;
 import com.le.system.service.ISysResourceService;
 import com.le.web.annotation.SystemLog;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+import java.util.List;
 import java.util.Set;
 
+
 /**
- * @ClassName SysResourceController
- * @Author lz
  * 资源后台管理
- * @Date 2018/10/11 10:06
- * @Version V1.0
- **/
+ * @author lz
+ * @since 2019/5/9 9:19
+ */
 @Slf4j
-@Controller
+@RestController
 @RequestMapping("/admin/system/resource")
 public class SysResourceController {
 
@@ -37,7 +37,6 @@ public class SysResourceController {
      * @author lz
      */
     @RequestMapping("/manageData")
-    @ResponseBody
     @PreAuthorize("hasAuthority('sys:resource:view')")
     @SystemLog("查看资源详情")
     public R detail(Long id) {
@@ -46,65 +45,81 @@ public class SysResourceController {
     }
 
     /**
-     * @param sysResource
-     * @return com.le.base.util.R
-     * 后台资源
+     * 后台资源添加
      * @author lz
-     * @date 2018/10/11 10:14
-     * @version V1.0.0
+     * @since 2019/5/9 9:19
      */
     @RequestMapping("/edit")
-    @ResponseBody
     @PreAuthorize("hasAuthority('sys:resource:edit')")
     @SystemLog("编辑资源信息")
-    public R edit(SysResource sysResource) {
-        return sysResourceService.editData(sysResource);
+    public R edit(@Valid SysResource sysResource) {
+        boolean exist = sysResourceService.exists(sysResource.getId(), sysResource.getPermission());
+        if (exist) {
+            return R.error("权限标识重复");
+        }
+        sysResourceService.editData(sysResource);
+        return R.success();
     }
 
     /**
-     * @param
-     * @return com.le.base.util.R
-     * 获取资源数据树
+     * 获取vue动态菜单接口
      * @author lz
-     * @date 2018/10/11 10:14
-     * @version V1.0.0
+     * @since 2019/5/9 9:19
+     */
+    @RequestMapping("/menuTree")
+    public R menuTree() {
+        List<SysResource> resources =  sysResourceService.menuTree();
+        return R.success().putData("menus", resources);
+    }
+
+    /**
+     * 获取资源下拉数据树
+     * @author lz
+     * @since 2019/5/9 9:19
      */
     @RequestMapping("/tree")
-    @ResponseBody
     public R permissionTree() {
-        Set<Tree> trees = sysResourceService.tree();
+        Set<TreeNode> trees = sysResourceService.tree();
         return R.success().putData("trees", trees);
     }
 
     /**
-     * 校验权限
-     *
-     * @return boolean 返回类型
+     * 获取父资源数据树
      * @author lz
+     * @since 2019/5/9 9:19
      */
-    @RequestMapping("/checkPermission")
-    @ResponseBody
-    @PreAuthorize("hasAuthority('sys:resource:edit')")
-    public boolean checkPermission(String permission, String oPermission) {
-        if (StringUtils.isEmpty(permission)) {
-            return false;
-        }
-        if (permission.equals(oPermission)) {
-            return true;
-        }
-        return sysResourceService.permissionExists(permission);
+    @RequestMapping("/parentTree")
+    public R parentTree() {
+        Set<Tree> trees = sysResourceService.parentTree();
+        return R.success().putData("parentTrees", trees);
     }
 
     /**
-     * @return R 返回类型
+     * 校验权限
+     * @author lz
+     * @since 2019/5/9 9:19
+     */
+    @RequestMapping("/checkPermission")
+    @PreAuthorize("hasAuthority('sys:resource:edit')")
+    public R checkPermission(Long id, String permission) {
+        boolean exist = sysResourceService.exists(id, permission);
+        return R.success().putData("exist", exist);
+    }
+
+    /**
      * 删除资源
      * @author lz
+     * @since 2019/5/9 9:19
      */
     @RequestMapping("/del")
-    @ResponseBody
     @PreAuthorize("hasAuthority('sys:resource:edit')")
     @SystemLog("删除资源")
     public R del(Long id) {
-        return sysResourceService.del(id);
+        boolean exist = sysResourceService.parentIsExists(id);
+        if (exist) {
+            return R.error("删除失败,请先删除子菜单");
+        }
+        sysResourceService.del(id);
+        return R.success();
     }
 }

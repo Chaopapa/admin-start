@@ -7,18 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author chenshun
- * @email sunlightcs@gmail.com
- * @date 2017-04-01 10:20
+ * XSS过滤 过滤器配置類
+ * @author lz
+ * @since 2019/5/9 9:19
  */
-
-/**
- * @ClassName XSS过滤
- * @Author lz
- * @Description XSS过滤 过滤器配置類
- * @Date 2018/10/8 13:50
- * @Version V1.0
- **/
 public class XssFilter implements Filter {
     private List<String> accessList = new ArrayList<>();
 

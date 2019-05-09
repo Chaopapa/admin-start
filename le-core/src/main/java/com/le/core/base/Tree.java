@@ -2,57 +2,46 @@ package com.le.core.base;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.List;
+import java.io.Serializable;
+import java.util.Set;
 
 /**
- * @ClassName Tree
- * @Author lz
- * @Description ztree 树节点
- * @Date 2018/10/10 11:06
- * @Version V1.0
+ * @author lz
+ * @since 2019/5/6 15:24
  **/
-public class Tree implements java.io.Serializable {
-    private static final long serialVersionUID = 1L;
+public class Tree implements Serializable, Comparable{
     /**
-     * id
+     * value id
      */
-    private String id;
+    private String value;
     /**
      * 名称
      */
-    private String name;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String label;
     /**
      * 子节点
      */
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private List<Tree> children;
+    private Set<Tree> children;
     /**
      * 父节点
      */
     private String pId;
 
 
-    public String getId() {
-        return id;
+    public String getValue() {
+        return value;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setValue(String value) {
+        this.value = value;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<Tree> getChildren() {
+    public Set<Tree> getChildren() {
         return children;
     }
 
-    public void setChildren(List<Tree> children) {
+    public void setChildren(Set<Tree> children) {
         this.children = children;
     }
 
@@ -62,5 +51,31 @@ public class Tree implements java.io.Serializable {
 
     public void setpId(String pId) {
         this.pId = pId;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    public Tree(){}
+
+    public Tree(String value, String pId, String label, Set<Tree> children) {
+        this.value = value;
+        this.pId = pId;
+        this.label = label;
+        this.children = children;
+    }
+
+    @Override
+    public int compareTo(Object obj) {
+        if(!(obj instanceof Tree)) {
+            throw new RuntimeException("不是CascaderNode对象");
+        }
+        Tree n =(Tree)obj;
+        return this.value.compareTo(n.getValue());
     }
 }
