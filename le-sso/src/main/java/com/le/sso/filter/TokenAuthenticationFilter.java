@@ -53,19 +53,22 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
         if (sysToken != null) {
             List<GrantedAuthority> authorities = new ArrayList<>();
-            List<String> permissions = userService.findPermission(sysToken.getUserId());
-            List<String> roles = userService.findRole(sysToken.getUserId());
-
-            for (String permission : permissions) {
-                authorities.add(new SimpleGrantedAuthority(permission));
-            }
-
-            for (String role : roles) {
-                authorities.add(new SimpleGrantedAuthority(role));
-            }
 
             if (sysToken.getTokenType() == TokenType.ADMIN) {
-                authorities.add(new SimpleGrantedAuthority("ROLE_"+Constant.ROLE_ADMIN));
+                List<String> permissions = userService.findPermission(sysToken.getUserId());
+                List<String> roles = userService.findRole(sysToken.getUserId());
+
+                for (String permission : permissions) {
+                    authorities.add(new SimpleGrantedAuthority(permission));
+                }
+
+                for (String role : roles) {
+                    authorities.add(new SimpleGrantedAuthority(role));
+                }
+
+                if (sysToken.getTokenType() == TokenType.ADMIN) {
+                    authorities.add(new SimpleGrantedAuthority("ROLE_" + Constant.ROLE_ADMIN));
+                }
             }
 
             SystemUserAuthenticationToken authenticationToken = new SystemUserAuthenticationToken(sysToken.getUserId(), null, authorities);
