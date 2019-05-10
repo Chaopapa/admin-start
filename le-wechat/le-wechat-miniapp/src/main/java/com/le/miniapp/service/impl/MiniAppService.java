@@ -114,14 +114,24 @@ public class MiniAppService implements IMiniAppService {
     }
 
     @Override
-    public WxMaPhoneNumberInfo getPhoneNoInfo(String appid, String sessionKey, String signature, String rawData, String encryptedData, String iv) {
+    public WxMaPhoneNumberInfo getPhoneNoInfo(String appid, String sessionKey, String encryptedData, String iv) {
         final WxMaService wxService = WxMaConfiguration.getMaService(appid);
-
         // 用户信息校验
-        if (!wxService.getUserService().checkUserInfo(sessionKey, rawData, signature)) {
-            return null;
-        }
+//        if (!wxService.getUserService().checkUserInfo(sessionKey, rawData, signature)) {
+//            return null;
+//        }
         return wxService.getUserService().getPhoneNoInfo(sessionKey, encryptedData, iv);
+    }
+
+    @Override
+    public WxMaJscode2SessionResult jsCode2SessionInfo(String appid, String code) {
+        final WxMaService wxService = WxMaConfiguration.getMaService(appid);
+        try {
+            return wxService.jsCode2SessionInfo(code);
+        } catch (WxErrorException e) {
+            log.error(e.getMessage(), e);
+        }
+        return null;
     }
 
     @Override

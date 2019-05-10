@@ -64,14 +64,19 @@ public interface IMiniAppService {
    * 获取手机
    * @param appid
    * @param sessionKey
-   * @param signature
-   * @param rawData
    * @param encryptedData
    * @param iv
    * @return
    */
-  WxMaPhoneNumberInfo getPhoneNoInfo(String appid, String sessionKey, String signature,
-                                     String rawData, String encryptedData, String iv);
+  WxMaPhoneNumberInfo getPhoneNoInfo(String appid, String sessionKey,String encryptedData, String iv);
+
+  /**
+   * 获取sessionKey
+   * @param appid
+   * @param code
+   * @return
+   */
+  WxMaJscode2SessionResult jsCode2SessionInfo(String appid,String code);
 
   /**
    * 上传素材
