@@ -12,5 +12,38 @@
     <artifactId>le-cs-web-admin</artifactId>
     <description>系统管理</description>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.le</groupId>
+            <artifactId>le-web</artifactId>
+            <version>${le.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.le</groupId>
+            <artifactId>le-system</artifactId>
+            <version>${le.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.le</groupId>
+            <artifactId>le-component</artifactId>
+            <version>${le.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.le</groupId>
+            <artifactId>le-sso</artifactId>
+            <version>${le.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.le</groupId>
+            <artifactId>le-log</artifactId>
+            <version>${le.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.le</groupId>
+            <artifactId>le-cs-service</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 
 </project>
