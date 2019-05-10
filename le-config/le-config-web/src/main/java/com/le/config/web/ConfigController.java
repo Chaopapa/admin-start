@@ -24,7 +24,7 @@ public class ConfigController {
     private ISysConfigService configService;
 
     @GetMapping("/global")
-    @PreAuthorize("hasAuthority('config:global:view')")
+    @PreAuthorize("hasPermission(null,'config:global:view','aa')")
     @SystemLog("查看全局配置")
     public R global() {
         GlobalConfig config = configService.findConfig(GlobalConfig.class);
@@ -39,7 +39,7 @@ public class ConfigController {
      */
     @PostMapping("/global")
     @ResponseBody
-    @PreAuthorize("hasAuthority('config:global:edit')")
+    @PreAuthorize("hasPermission(null,'config:global:edit')")
     @SystemLog("保存全局配置")
     public R global(@Valid GlobalConfig config) {
         configService.saveConfig(config);
@@ -50,7 +50,7 @@ public class ConfigController {
      * 跳转云存储配置
      */
     @GetMapping("/oss")
-    @PreAuthorize("hasAuthority('config:oss:view')")
+    @PreAuthorize("hasPermission(null,'config:oss:view')")
     @SystemLog("查看云存储配置")
     public R oss() {
         CloudStorageConfig config = configService.findConfig(CloudStorageConfig.class);
@@ -65,7 +65,7 @@ public class ConfigController {
      */
     @PostMapping("/oss")
     @ResponseBody
-    @PreAuthorize("hasAuthority('config:oss:edit')")
+    @PreAuthorize("hasPermission(null,'config:oss:edit')")
     @SystemLog("保存云存储配置")
     public R oss(@Valid CloudStorageConfig cloudStorageConfig) {
         configService.saveConfig(cloudStorageConfig);
@@ -78,7 +78,7 @@ public class ConfigController {
      * @return
      */
     @GetMapping("/sms")
-    @PreAuthorize("hasAuthority('config:sms:view')")
+    @PreAuthorize("hasPermission(null,'config:sms:view')")
     @SystemLog("查看短信配置")
     public R sms() {
         SmsConfig config = configService.findConfig(SmsConfig.class);
@@ -87,7 +87,7 @@ public class ConfigController {
 
     @PostMapping("/sms")
     @ResponseBody
-    @PreAuthorize("hasAuthority('config:sms:edit')")
+    @PreAuthorize("hasPermission(null,'config:sms:edit')")
     @SystemLog("保存短信配置")
     public R sms(@Valid SmsConfig smsConfig) {
         configService.saveConfig(smsConfig);
@@ -100,7 +100,7 @@ public class ConfigController {
      * @return
      */
     @GetMapping("/banner")
-    @PreAuthorize("hasAuthority('config:banner:view')")
+    @PreAuthorize("hasPermission(null,'config:banner:view')")
     @SystemLog("查看广告图配置")
     public R banner() {
         BannerConfig config = configService.findConfig(BannerConfig.class);
@@ -109,7 +109,7 @@ public class ConfigController {
 
     @PostMapping("/cms")
     @ResponseBody
-    @PreAuthorize("hasAuthority('config:banner:edit')")
+    @PreAuthorize("hasPermission(null,'config:banner:edit')")
     @SystemLog("保存广告图配置")
     public R banner(@Valid BannerConfig config) {
         configService.saveConfig(config);
@@ -122,7 +122,7 @@ public class ConfigController {
      * @return
      */
     @GetMapping("/wechat")
-    @PreAuthorize("hasAuthority('config:wechat:view')")
+    @PreAuthorize("hasPermission(null,'config:wechat:view')")
     @SystemLog("查看微信配置")
     public R wechat() {
         WechatConfig config = configService.findConfig(WechatConfig.class);
@@ -131,7 +131,7 @@ public class ConfigController {
 
     @PostMapping("/wechat")
     @ResponseBody
-    @PreAuthorize("hasAuthority('config:wechat:edit')")
+    @PreAuthorize("hasPermission(null,'config:wechat:edit')")
     @SystemLog("保存微信配置")
     public R wechat(@Valid WechatConfig config) {
         configService.saveConfig(config);
@@ -144,7 +144,7 @@ public class ConfigController {
      * @return
      */
     @GetMapping("/print")
-    @PreAuthorize("hasAuthority('config:print:view')")
+    @PreAuthorize("hasPermission(null,'config:print:view')")
     @SystemLog("查看云打印机配置")
     public R print() {
         PrintConfig config = configService.findConfig(PrintConfig.class);
@@ -153,7 +153,7 @@ public class ConfigController {
 
     @PostMapping("/print")
     @ResponseBody
-    @PreAuthorize("hasAuthority('config:print:edit')")
+    @PreAuthorize("hasPermission(null,'config:print:edit')")
     @SystemLog("保存云打印机配置")
     public R print(@Valid PrintConfig config) {
         configService.saveConfig(config);

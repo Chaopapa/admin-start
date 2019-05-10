@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
  **/
 public enum TokenType implements IEnum<String> {
 
-    SYSTEM("SYSTEM", "系统", 20, ChronoUnit.MINUTES, TimeUnit.MINUTES),
+    ADMIN("admin", "系统", 20, ChronoUnit.MINUTES, TimeUnit.MINUTES),
     BIZ("BIZ", "业务", 0, ChronoUnit.MINUTES, TimeUnit.MINUTES);
 
     private String value;

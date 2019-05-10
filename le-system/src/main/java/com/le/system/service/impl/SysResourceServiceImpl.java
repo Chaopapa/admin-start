@@ -81,7 +81,7 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
      * @since 2019/5/9 9:19
      */
     @Override
-    public List<SysResource> queryByRoleId(Long roleId) {
+    public Set<String> queryByRoleId(Long roleId) {
         return baseMapper.queryByRoleId(roleId);
     }
 

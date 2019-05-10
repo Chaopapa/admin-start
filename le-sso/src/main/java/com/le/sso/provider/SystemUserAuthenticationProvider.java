@@ -1,5 +1,6 @@
 package com.le.sso.provider;
 
+import com.le.core.util.Constant;
 import com.le.sso.authentication.SystemUserAuthenticationToken;
 import com.le.system.entity.SysToken;
 import com.le.system.entity.SysUser;
@@ -46,7 +47,7 @@ public class SystemUserAuthenticationProvider implements AuthenticationProvider 
             throw new BadCredentialsException("用户名或者密码错误");
         }
 
-        SysToken token = tokenService.createToken(user.getId(), TokenType.SYSTEM);
+        SysToken token = tokenService.createToken(user.getId(), TokenType.ADMIN);
         List<GrantedAuthority> authorities = new ArrayList<>();
         List<String> permissions = userService.findPermission(user.getId());
         List<String> roles = userService.findRole(user.getId());
@@ -59,6 +60,7 @@ public class SystemUserAuthenticationProvider implements AuthenticationProvider 
             authorities.add(new SimpleGrantedAuthority(role));
         }
 
+        authorities.add(new SimpleGrantedAuthority("ROLE_"+Constant.ROLE_ADMIN));
         SystemUserAuthenticationToken authenticationToken
                 = new SystemUserAuthenticationToken(token.getUserId(), null, authorities);
         authenticationToken.setDetails(token);
