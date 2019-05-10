@@ -60,7 +60,7 @@ public class SystemUserAuthenticationProvider implements AuthenticationProvider 
             authorities.add(new SimpleGrantedAuthority(role));
         }
 
-        authorities.add(new SimpleGrantedAuthority(Constant.ROLE_ADMIN));
+        authorities.add(new SimpleGrantedAuthority("ROLE_"+Constant.ROLE_ADMIN));
         SystemUserAuthenticationToken authenticationToken
                 = new SystemUserAuthenticationToken(token.getUserId(), null, authorities);
         authenticationToken.setDetails(token);
