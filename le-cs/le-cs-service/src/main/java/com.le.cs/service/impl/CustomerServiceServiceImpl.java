@@ -27,9 +27,6 @@ public class CustomerServiceServiceImpl extends ServiceImpl<CustomerServiceMappe
 
         IPage<CustomerService> page = baseMapper.selectPage(pagination, qw);
 
-        if(page == null){
-            return R.empty();
-        }
         return R.success(page);
     }
 

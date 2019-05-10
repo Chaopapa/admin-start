@@ -27,9 +27,6 @@ public class OpenUserServiceImpl extends ServiceImpl<OpenUserMapper, OpenUser> i
 
         IPage<OpenUser> page = baseMapper.selectPage(pagination, qw);
 
-        if(page == null){
-            return R.empty();
-        }
         return R.success(page);
     }
 

@@ -27,9 +27,6 @@ public class MiniProgramServiceImpl extends ServiceImpl<MiniProgramMapper, MiniP
 
         IPage<MiniProgram> page = baseMapper.selectPage(pagination, qw);
 
-        if(page == null){
-            return R.empty();
-        }
         return R.success(page);
     }
 

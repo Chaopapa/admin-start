@@ -27,7 +27,7 @@ import java.util.List;
  */
 @Slf4j
 @RestController
-@RequestMapping("/admin/cs/customer-service")
+@RequestMapping("/admin/cs/customerService")
 public class CustomerServiceController {
     @Autowired
     private ICustomerServiceService customerServiceService;
