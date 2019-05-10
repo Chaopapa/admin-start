@@ -140,7 +140,6 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
     @Override
     public List<SysResource> menuTree() {
         QueryWrapper<SysResource> qw = new QueryWrapper<>();
-        qw.eq("type",ResourceType.MENU);
         qw.orderByAsc("deep","seq");
         List<SysResource> sysResources = this.list(qw);
         List<SysResource> sysResourceList = new ArrayList<>();
