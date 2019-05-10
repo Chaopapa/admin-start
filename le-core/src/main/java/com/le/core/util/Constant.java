@@ -28,7 +28,7 @@ public final class Constant {
     /**
      * 后台管理角色
      */
-    public static final String ROLE_ADMIN = "role.admin";
+    public static final String ROLE_ADMIN = "constAdmin";
 
 
 }

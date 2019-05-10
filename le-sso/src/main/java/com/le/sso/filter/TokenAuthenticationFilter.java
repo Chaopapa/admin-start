@@ -65,7 +65,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
             }
 
             if (sysToken.getTokenType() == TokenType.ADMIN) {
-                authorities.add(new SimpleGrantedAuthority(Constant.ROLE_ADMIN));
+                authorities.add(new SimpleGrantedAuthority("ROLE_"+Constant.ROLE_ADMIN));
             }
 
             SystemUserAuthenticationToken authenticationToken = new SystemUserAuthenticationToken(sysToken.getUserId(), null, authorities);

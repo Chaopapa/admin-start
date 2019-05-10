@@ -1,5 +1,6 @@
 package com.le.sso.config;
 
+import com.le.core.util.Constant;
 import com.le.sso.filter.CorsFilter;
 import com.le.sso.filter.TokenAuthenticationFilter;
 import com.le.sso.handler.AuthenticationHandler;
@@ -47,7 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .authorizeRequests().antMatchers("/auth/**").permitAll()
                 .antMatchers("/error/**").permitAll()
-                .antMatchers("/admin/**").hasRole("")
+                .antMatchers("/admin/**").hasRole(Constant.ROLE_ADMIN)
                 .anyRequest().authenticated().and()
                 // don't create se`ssion
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
