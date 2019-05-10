@@ -11,6 +11,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -44,9 +45,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         // we don't need CSRF because our token is invulnerable
         http.csrf().disable()
-                .authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                .antMatchers("/auth/**").permitAll()
+                .authorizeRequests().antMatchers("/auth/**").permitAll()
                 .antMatchers("/error/**").permitAll()
+                .antMatchers("/admin/**").hasRole("")
                 .anyRequest().authenticated().and()
                 // don't create se`ssion
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
@@ -58,5 +59,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .headers().cacheControl();
 
+    }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().mvcMatchers(HttpMethod.OPTIONS, "/**");
     }
 }

@@ -40,7 +40,7 @@ public interface ISysResourceService extends IService<SysResource> {
      * @author lz
      * @since 2019/5/9 9:19
      */
-    List<SysResource> queryByRoleId(Long roleId);
+    Set<String> queryByRoleId(Long roleId);
 
     /**
      * 校验资源权限是否存在

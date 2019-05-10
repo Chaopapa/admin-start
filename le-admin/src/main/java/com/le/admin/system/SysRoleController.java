@@ -2,14 +2,12 @@ package com.le.admin.system;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.le.core.rest.R;
-import com.le.system.entity.SysResource;
 import com.le.log.annotation.SystemLog;
 import com.le.system.entity.SysRole;
 import com.le.system.service.ISysResourceService;
 import com.le.system.service.ISysRoleService;
 import com.le.web.util.HttpContextUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,10 +16,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * 角色后台管理
@@ -45,7 +41,7 @@ public class SysRoleController {
      */
     @RequestMapping("/page")
     @ResponseBody
-    @PreAuthorize("hasAuthority('sys:role:view')")
+    @PreAuthorize("hasPermission(null,'sys:role:view')")
     @SystemLog("查看角色列表")
     public R page(SysRole search) {
         Page<SysRole> page = HttpContextUtils.getPage();
@@ -56,15 +52,11 @@ public class SysRoleController {
      * 跳转角色信息页
      */
     @RequestMapping("/detail")
-    @PreAuthorize("hasAuthority('sys:role:view')")
+    @PreAuthorize("hasPermission(null,'sys:role:view')")
     @SystemLog("查看角色详情")
     public R detail(Long id) {
         SysRole role = sysRoleService.getById(id);
-        List<SysResource> sysResources = sysResourceService.queryByRoleId(id);
-        Set<Long> resourcesIds = new HashSet<>();
-        if(CollectionUtils.isNotEmpty(sysResources)){
-            resourcesIds = sysResources.stream().map(SysResource::getId).collect(Collectors.toSet());
-        }
+        Set<String> resourcesIds = sysResourceService.queryByRoleId(id);
         return R.success().putData("role", role).putData("resourcesIds", resourcesIds);
     }
 
@@ -73,7 +65,7 @@ public class SysRoleController {
      */
     @RequestMapping("/edit")
     @ResponseBody
-    @PreAuthorize("hasAuthority('sys:role:edit')")
+    @PreAuthorize("hasPermission(null,'sys:role:edit')")
     @SystemLog("编辑角色信息")
     public R edit(@Valid SysRole role, Long[] resourceIds) {
         boolean exist = sysRoleService.exists(role.getId(), role.getRole());
@@ -94,7 +86,7 @@ public class SysRoleController {
      */
     @RequestMapping(value = "/checkRole")
     @ResponseBody
-    @PreAuthorize("hasAuthority('sys:role:edit')")
+    @PreAuthorize("hasPermission(null,'sys:role:edit')")
     public R checkRole(@RequestParam(required = false) Long id, String role) {
         boolean exist = sysRoleService.exists(id, role);
         return R.success().putData("exist", exist);
@@ -105,7 +97,7 @@ public class SysRoleController {
      */
     @RequestMapping("/del")
     @ResponseBody
-    @PreAuthorize("hasAuthority('sys:role:edit')")
+    @PreAuthorize("hasPermission(null,'sys:role:edit')")
     @SystemLog("删除角色")
     public R del(@RequestParam("ids") List<Long> ids) {
         sysRoleService.del(ids);
