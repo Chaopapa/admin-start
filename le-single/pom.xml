@@ -26,6 +26,11 @@
             <artifactId>le-config-web</artifactId>
             <version>${le.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.le</groupId>
+            <artifactId>le-cs-web-admin</artifactId>
+            <version>${le.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>com.le</groupId>

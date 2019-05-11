@@ -46,7 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         // we don't need CSRF because our token is invulnerable
         http.csrf().disable()
-                .authorizeRequests().antMatchers("/auth/**").permitAll()
+                .authorizeRequests().antMatchers("/auth/**").permitAll().antMatchers("/api/**").permitAll()
                 .antMatchers("/error/**").permitAll()
                 .antMatchers("/admin/**").hasRole(Constant.ROLE_ADMIN)
                 .anyRequest().authenticated().and()

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.le.cs.mapper.MiniProgramMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.le.cs.entity.MiniProgram">
+        <result column="id" property="id" />
+        <result column="create_date" property="createDate" />
+        <result column="modify_date" property="modifyDate" />
+        <result column="open_user_id" property="openUserId" />
+        <result column="name" property="name" />
+        <result column="appid" property="appid" />
+        <result column="secret" property="secret" />
+        <result column="token" property="token" />
+        <result column="aes_key" property="aesKey" />
+        <result column="msg_notify_url" property="msgNotifyUrl" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, create_date, modify_date, 
+        open_user_id, name, appid, secret, token, aes_key, msg_notify_url
+    </sql>
+
+</mapper>
