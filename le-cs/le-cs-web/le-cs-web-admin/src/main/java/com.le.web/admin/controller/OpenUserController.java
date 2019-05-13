@@ -20,7 +20,7 @@ import java.util.List;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author WXY
@@ -84,7 +84,7 @@ public class OpenUserController {
     @ResponseBody
     @PreAuthorize("hasPermission(null ,'cs:openUser:edit')")
     @SystemLog("删除")
-    public R del(@RequestParam("ids") List<Long> ids){
+    public R del(@RequestParam("ids") List<Long> ids) {
         openUserService.removeByIds(ids);
         return R.success();
     }
@@ -103,4 +103,18 @@ public class OpenUserController {
         boolean exist = openUserService.usernameExists(id, username);
         return R.success().putData("exist", exist);
     }
+
+    /**
+     * 平台用户列表
+     *
+     * @return
+     */
+    @RequestMapping(value = "/openUserList")
+    @PreAuthorize("hasPermission(null,'cs:openUser:view')")
+    @SystemLog("平台用户列表")
+    public R openUserList() {
+        List<OpenUser> openUserList = openUserService.list(null);
+        return R.success().putData("openUserList", openUserList);
+    }
+
 }
