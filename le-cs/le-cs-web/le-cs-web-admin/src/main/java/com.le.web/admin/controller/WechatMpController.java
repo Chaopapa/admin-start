@@ -1,14 +1,15 @@
-package com.le.cs.controller;
+package com.le.web.admin.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.le.core.annotation.SystemLog;
+import com.le.cs.entity.OpenUser;
 import com.le.cs.entity.WechatMp;
 import com.le.cs.service.IWechatMpService;
 import com.le.core.rest.R;
-import com.le.core.util.HttpContextUtils;
+import com.le.log.annotation.SystemLog;
+import com.le.web.util.HttpContextUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,22 +29,10 @@ import java.util.List;
  */
 @Slf4j
 @Controller
-@RequestMapping("/admin/cs/wechat-mp")
+@RequestMapping("/admin/cs/wechatMp")
 public class WechatMpController {
     @Autowired
     private IWechatMpService wechatMpService;
-
-    /**
-     * 跳转首页
-     *
-     * @param model
-     * @return
-     */
-    @RequestMapping({"/index", "/"})
-    @RequiresPermissions("cs:wechatMp:view")
-    public String index(ModelMap model) {
-        return "admin/cs/wechatMp/index";
-    }
 
     /**
      * 获取分页数据
@@ -53,29 +42,11 @@ public class WechatMpController {
      */
     @RequestMapping("/page")
     @ResponseBody
-    @RequiresPermissions("cs:wechatMp:view")
+    @PreAuthorize("hasPermission(null ,'cs:wechatMp:view')")
     @SystemLog("查看列表")
     public R page(WechatMp search) {
         Page<WechatMp> page = HttpContextUtils.getPage();
         return wechatMpService.findPage(page, search);
-    }
-
-    /**
-     * 跳转信息页
-     *
-     * @param model
-     * @param id
-     * @return
-     */
-    @RequestMapping("/edit")
-    @RequiresPermissions("cs:wechatMp:view")
-    @SystemLog("查看详情")
-    public String edit(ModelMap model, Long id) {
-        if (id != null) {
-            WechatMp wechatMp = wechatMpService.getById(id);
-            model.put("entity", wechatMp);
-        }
-        return "admin/cs/wechatMp/edit";
     }
 
     /**
@@ -86,10 +57,21 @@ public class WechatMpController {
      */
     @RequestMapping("/editData")
     @ResponseBody
-    @RequiresPermissions("cs:wechatMp:edit")
+    @PreAuthorize("hasPermission(null ,'cs:wechatMp:edit')")
     @SystemLog("编辑信息")
     public R editData(@Valid WechatMp wechatMp) {
         return wechatMpService.editData(wechatMp);
+    }
+
+    /**
+     * 跳转角色信息页
+     */
+    @RequestMapping("/detail")
+    @PreAuthorize("hasPermission(null,'cs:wechatMp:view')")
+    @SystemLog("查看详情")
+    public R detail(Long id) {
+        WechatMp wechatMp = wechatMpService.getById(id);
+        return R.success().putData("wechatMp", wechatMp);
     }
 
     /**
@@ -100,7 +82,7 @@ public class WechatMpController {
      */
     @RequestMapping("/del")
     @ResponseBody
-    @RequiresPermissions("cs:wechatMp:edit")
+    @PreAuthorize("hasPermission(null ,'cs:wechatMp:edit')")
     @SystemLog("删除")
     public R del(@RequestParam("ids") List<Long> ids){
         wechatMpService.removeByIds(ids);
