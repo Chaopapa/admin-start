@@ -9,6 +9,7 @@ import com.le.cs.mapper.CustomerServiceMapper;
 import com.le.cs.service.ICustomerServiceService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.le.core.rest.R;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 /**
@@ -25,7 +26,12 @@ public class CustomerServiceServiceImpl extends ServiceImpl<CustomerServiceMappe
     @Override
     public R findPage(Page<CustomerService> pagination, CustomerService search) {
         QueryWrapper<CustomerService> qw = new QueryWrapper<>();
-
+        if (StringUtils.isNotEmpty(search.getName())) {
+            qw.like("name",search.getName());
+        }
+        if (StringUtils.isNotEmpty(search.getUsername())) {
+            qw.like("username",search.getUsername());
+        }
         IPage<CustomerService> page = baseMapper.selectPage(pagination, qw);
 
         return R.success(page);

@@ -31,4 +31,6 @@ public interface IOpenUserService extends IService<OpenUser> {
      * @return
      */
     R editData(OpenUser openUser);
+
+    boolean usernameExists(Long id, String username);
 }
