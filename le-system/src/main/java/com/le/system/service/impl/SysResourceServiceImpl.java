@@ -106,11 +106,8 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
         if (id != null) {
             wrapper.ne(SysResource::getId, id);
         }
-        if (StringUtils.isEmpty(permission)) {
-            return false;
-        }else {
-            wrapper.eq(SysResource::getPermission, permission);
-        }
+
+        wrapper.eq(SysResource::getPermission, permission);
 
         Integer count = baseMapper.selectCount(wrapper);
         return count != null && count > 0;
