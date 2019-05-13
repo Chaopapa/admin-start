@@ -3,6 +3,7 @@ package com.le.web.admin.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.le.core.rest.R;
 import com.le.cs.entity.CustomerService;
+import com.le.cs.entity.MiniProgram;
 import com.le.cs.service.ICustomerServiceService;
 import com.le.log.annotation.SystemLog;
 import com.le.web.util.HttpContextUtils;
@@ -19,7 +20,7 @@ import java.util.List;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author WXY
@@ -48,6 +49,17 @@ public class CustomerServiceController {
     }
 
     /**
+     * 跳转角色信息页
+     */
+    @RequestMapping("/detail")
+    @PreAuthorize("hasPermission(null,'cs:customerService:view')")
+    @SystemLog("查看详情")
+    public R detail(Long id) {
+        CustomerService customerService = customerServiceService.getById(id);
+        return R.success().putData("customerService", customerService);
+    }
+
+    /**
      * 添加或者更新
      *
      * @param customerService
@@ -71,8 +83,25 @@ public class CustomerServiceController {
     @ResponseBody
     @PreAuthorize("hasPermission(null ,'cs:customerService:edit')")
     @SystemLog("删除")
-    public R del(@RequestParam("ids") List<Long> ids){
+    public R del(@RequestParam("ids") List<Long> ids) {
         customerServiceService.removeByIds(ids);
         return R.success();
     }
+
+    /**
+     * 检查用户名
+     *
+     * @param id       用户id
+     * @param username 登录名
+     * @return
+     */
+    @RequestMapping(value = "/checkUserName")
+    @ResponseBody
+    @PreAuthorize("hasPermission(null,'cs:customerService:edit')")
+    public R checkUserName(@RequestParam(required = false) Long id, String username) {
+        boolean exist = customerServiceService.usernameExists(id, username);
+        return R.success().putData("exist", exist);
+    }
 }
+
+

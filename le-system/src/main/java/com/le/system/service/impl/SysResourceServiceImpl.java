@@ -11,6 +11,7 @@ import com.le.system.mapper.SysResourceMapper;
 import com.le.system.mapper.SysRoleResourceMapper;
 import com.le.system.service.ISysResourceService;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -105,7 +106,11 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
         if (id != null) {
             wrapper.ne(SysResource::getId, id);
         }
-        wrapper.eq(SysResource::getPermission, permission);
+        if (StringUtils.isEmpty(permission)) {
+            return false;
+        }else {
+            wrapper.eq(SysResource::getPermission, permission);
+        }
 
         Integer count = baseMapper.selectCount(wrapper);
         return count != null && count > 0;

@@ -31,4 +31,6 @@ public interface ICustomerServiceService extends IService<CustomerService> {
      * @return
      */
     R editData(CustomerService customerService);
+
+    boolean usernameExists(Long id, String username);
 }

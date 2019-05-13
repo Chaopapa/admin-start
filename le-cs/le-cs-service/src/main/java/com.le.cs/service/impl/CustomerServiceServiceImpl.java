@@ -1,5 +1,6 @@
 package com.le.cs.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -33,5 +34,18 @@ public class CustomerServiceServiceImpl extends ServiceImpl<CustomerServiceMappe
     public R editData(CustomerService customerService) {
         saveOrUpdate(customerService);
         return R.success();
+    }
+
+    @Override
+    public boolean usernameExists(Long id, String username) {
+        LambdaQueryWrapper<CustomerService> wrapper = new LambdaQueryWrapper<>();
+
+        if (id != null) {
+            wrapper.ne(CustomerService::getId, id);
+        }
+
+        wrapper.eq(CustomerService::getUsername, username);
+        Integer count = baseMapper.selectCount(wrapper);
+        return count != null && count > 0;
     }
 }
