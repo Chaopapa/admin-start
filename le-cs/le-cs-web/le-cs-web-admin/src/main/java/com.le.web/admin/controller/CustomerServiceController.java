@@ -1,5 +1,7 @@
 package com.le.web.admin.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.le.core.rest.R;
 import com.le.cs.entity.CustomerService;
@@ -101,6 +103,22 @@ public class CustomerServiceController {
     public R checkUserName(@RequestParam(required = false) Long id, String username) {
         boolean exist = customerServiceService.usernameExists(id, username);
         return R.success().putData("exist", exist);
+    }
+
+    /**
+     * 查找当前平台用户下客服数量
+     *
+     * @param openUserId
+     * @return
+     */
+    @RequestMapping(value = "/customerNum")
+    @ResponseBody
+    public R customerNum(Long openUserId, Long id) {
+        if (openUserId == null) {
+            return R.success().putData("haveNum", true);
+        }
+        boolean haveNum = customerServiceService.customerNum(openUserId,id);
+        return R.success().putData("haveNum", haveNum);
     }
 }
 

@@ -15,6 +15,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -28,7 +29,7 @@ import java.util.List;
  * @since 2019-05-13
  */
 @Slf4j
-@Controller
+@RestController
 @RequestMapping("/admin/cs/wechatMp")
 public class WechatMpController {
     @Autowired
