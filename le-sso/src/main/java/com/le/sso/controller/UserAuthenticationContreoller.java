@@ -1,8 +1,11 @@
 package com.le.sso.controller;
 
 import com.le.core.rest.R;
+import com.le.sso.authentication.AppCustomerAuthenticationToken;
 import com.le.sso.authentication.SystemUserAuthenticationToken;
+import com.le.sso.entity.vo.AppLogin;
 import com.le.sso.entity.vo.SystemUserLogin;
+import com.le.sso.provider.AppCustomerAuthenticationProvider;
 import com.le.sso.service.ISSOService;
 import com.le.system.entity.SysToken;
 import com.le.system.service.ISysTokenService;
@@ -30,6 +33,8 @@ public class UserAuthenticationContreoller {
     private ISSOService ssoService;
     @Autowired
     private ISysTokenService tokenService;
+    @Autowired
+    private AppCustomerAuthenticationProvider appCustomerAuthenticationProvider;
 
     /**
      * 系统用户登录
@@ -43,6 +48,21 @@ public class UserAuthenticationContreoller {
                 = new SystemUserAuthenticationToken(userLogin.getUsername(), userLogin.getPassword());
         Authentication authentication = authenticationManager.authenticate(authenticationToken);
         SysToken details = (SysToken) authentication.getDetails();
+        return R.success().putData("token", details.getId());
+    }
+
+    /**
+     * app客服人员登录
+     *
+     * @param appLogin
+     * @return
+     */
+    @RequestMapping("app-login")
+    public R appLogin(@Valid AppLogin appLogin) {
+        AppCustomerAuthenticationToken authenticationToken
+                = new AppCustomerAuthenticationToken(appLogin.getUsername(), appLogin.getPassword());
+        Authentication token = appCustomerAuthenticationProvider.authenticate(authenticationToken);
+        SysToken details = (SysToken) token.getDetails();
         return R.success().putData("token", details.getId());
     }
 
