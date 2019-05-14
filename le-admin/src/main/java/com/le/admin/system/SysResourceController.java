@@ -7,6 +7,7 @@ import com.le.log.annotation.SystemLog;
 import com.le.system.entity.SysResource;
 import com.le.system.service.ISysResourceService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,7 +53,12 @@ public class SysResourceController {
     @PreAuthorize("hasPermission(null,'sys:resource:edit')")
     @SystemLog("编辑资源信息")
     public R edit(@Valid SysResource sysResource) {
-        boolean exist = sysResourceService.exists(sysResource.getId(), sysResource.getPermission());
+        boolean exist = true;
+        if (StringUtils.isEmpty(sysResource.getPermission())) {
+            exist = false;
+        }else {
+            exist = sysResourceService.exists(sysResource.getId(), sysResource.getPermission());
+        }
         if (exist) {
             return R.error("权限标识重复");
         }

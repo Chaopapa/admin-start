@@ -36,4 +36,8 @@ public interface ICustomerServiceService extends IService<CustomerService> {
     R login(LoginServiceVo loginServiceVo);
 
     CustomerService findByUserName(String username);
+
+    boolean usernameExists(Long id, String username);
+
+    boolean customerNum(Long openUserId, Long id);
 }

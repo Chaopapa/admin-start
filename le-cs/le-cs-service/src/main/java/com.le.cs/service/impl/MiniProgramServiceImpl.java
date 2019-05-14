@@ -8,11 +8,12 @@ import com.le.cs.mapper.MiniProgramMapper;
 import com.le.cs.service.IMiniProgramService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.le.core.rest.R;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author WXY
@@ -24,7 +25,9 @@ public class MiniProgramServiceImpl extends ServiceImpl<MiniProgramMapper, MiniP
     @Override
     public R findPage(Page<MiniProgram> pagination, MiniProgram search) {
         QueryWrapper<MiniProgram> qw = new QueryWrapper<>();
-
+        if (StringUtils.isNotEmpty(search.getName())) {
+            qw.like("name", search.getName());
+        }
         IPage<MiniProgram> page = baseMapper.selectPage(pagination, qw);
 
         return R.success(page);
