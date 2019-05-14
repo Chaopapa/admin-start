@@ -4,10 +4,11 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.le.cs.entity.CustomerService;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.le.core.rest.R;
+import com.le.cs.vo.LoginServiceVo;
 
 /**
  * <p>
- *  服务类
+ * 服务类
  * </p>
  *
  * @author WXY
@@ -31,4 +32,8 @@ public interface ICustomerServiceService extends IService<CustomerService> {
      * @return
      */
     R editData(CustomerService customerService);
+
+    R login(LoginServiceVo loginServiceVo);
+
+    CustomerService findByUserName(String username);
 }

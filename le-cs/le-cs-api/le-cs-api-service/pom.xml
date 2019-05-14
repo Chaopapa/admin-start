@@ -22,6 +22,11 @@
             <artifactId>le-wechat-miniapp</artifactId>
             <version>${le.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.le</groupId>
+            <artifactId>le-cs-service</artifactId>
+            <version>${le.version}</version>
+        </dependency>
     </dependencies>
 
 </project>
