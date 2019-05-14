@@ -14,7 +14,6 @@
     <modules>
         <module>le-wechat-mp</module>
         <module>le-wechat-miniapp</module>
-        <module>le-wechat-common</module>
     </modules>
 
 

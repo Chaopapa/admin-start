@@ -56,6 +56,8 @@
         <freemarker-java8.version>1.1.5</freemarker-java8.version>
         <httpclient.version>4.4.1</httpclient.version>
         <hibernate-validator.version>6.0.13.Final</hibernate-validator.version>
+
+        <weixin-java.version>3.3.0</weixin-java.version>
     </properties>
 
     <dependencies>
@@ -213,6 +215,16 @@
                 <groupId>commons-beanutils</groupId>
                 <artifactId>commons-beanutils</artifactId>
                 <version>${commons-beanutils.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.binarywang</groupId>
+                <artifactId>weixin-java-miniapp</artifactId>
+                <version>${weixin-java.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.binarywang</groupId>
+                <artifactId>weixin-java-mp</artifactId>
+                <version>${weixin-java.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

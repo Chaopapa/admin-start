@@ -20,6 +20,7 @@ public enum RCode implements IEnum<String> {
 
     noRegister("1101", "用户未注册"),
     hasRegister("1102", "用户已注册"),
+    unbind("1005", "未绑定手机号"),
     accountOrPasswordError("1103", "用户名密码错误"),
     smsCodeError("1104", "短信验证码错误");
 
