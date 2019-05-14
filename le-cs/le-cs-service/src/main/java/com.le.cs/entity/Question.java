@@ -28,7 +28,7 @@ public class Question extends SuperEntity {
     /**
      * 答案
      */
-    private String answer1;
+    private String answer;
 
 
 }

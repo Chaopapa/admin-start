@@ -48,6 +48,17 @@ public class KeywordController {
     }
 
     /**
+     * 跳转角色信息页
+     */
+    @RequestMapping("/detail")
+    @PreAuthorize("hasPermission(null,'cs:keyword:view')")
+    @SystemLog("查看详情")
+    public R detail(Long id) {
+        Keyword keyword = keywordService.getById(id);
+        return R.success().putData("keyword", keyword);
+    }
+
+    /**
      * 添加或者更新
      *
      * @param keyword

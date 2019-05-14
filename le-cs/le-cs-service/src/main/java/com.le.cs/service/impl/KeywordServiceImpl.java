@@ -8,6 +8,7 @@ import com.le.cs.mapper.KeywordMapper;
 import com.le.cs.service.IKeywordService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.le.core.rest.R;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 /**
@@ -24,7 +25,9 @@ public class KeywordServiceImpl extends ServiceImpl<KeywordMapper, Keyword> impl
     @Override
     public R findPage(Page<Keyword> pagination, Keyword search) {
         QueryWrapper<Keyword> qw = new QueryWrapper<>();
-
+        if (StringUtils.isNotEmpty(search.getKeyword())) {
+            qw.like("keyword",search.getKeyword());
+        }
         IPage<Keyword> page = baseMapper.selectPage(pagination, qw);
         return R.success(page);
     }

@@ -1,6 +1,7 @@
 package com.le.cs.entity;
 
 import com.le.core.base.SuperEntity;
+import com.le.cs.entity.enums.KeywordType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -33,7 +34,7 @@ public class Keyword extends SuperEntity {
     /**
      * 内容类型
      */
-    private Integer type;
+    private KeywordType type;
 
 
 }

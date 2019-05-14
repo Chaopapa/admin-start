@@ -48,6 +48,18 @@ public class QuestionController {
     }
 
     /**
+     * 跳转角色信息页
+     */
+    @RequestMapping("/detail")
+    @PreAuthorize("hasPermission(null,'cs:question:view')")
+    @SystemLog("查看详情")
+    public R detail(Long id) {
+        Question question = questionService.getById(id);
+        return R.success().putData("question", question);
+    }
+
+
+    /**
      * 添加或者更新
      *
      * @param question
