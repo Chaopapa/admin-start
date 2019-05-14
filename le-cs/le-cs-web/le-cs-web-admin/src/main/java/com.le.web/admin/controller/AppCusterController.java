@@ -1,8 +1,8 @@
 package com.le.web.admin.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.le.cs.entity.ChatRecord;
-import com.le.cs.service.IChatRecordService;
+import com.le.cs.entity.AppCuster;
+import com.le.cs.service.IAppCusterService;
 import com.le.core.rest.R;
 import com.le.log.annotation.SystemLog;
 import com.le.web.util.HttpContextUtils;
@@ -27,10 +27,10 @@ import java.util.List;
  */
 @Slf4j
 @RestController
-@RequestMapping("/admin/cs/chatRecord")
-public class ChatRecordController {
+@RequestMapping("/admin/cs/appCuster")
+public class AppCusterController {
     @Autowired
-    private IChatRecordService chatRecordService;
+    private IAppCusterService appCusterService;
 
     /**
      * 获取分页数据
@@ -40,36 +40,36 @@ public class ChatRecordController {
      */
     @RequestMapping("/page")
     @ResponseBody
-    @PreAuthorize("hasPermission(null ,'cs:chatRecord:view')")
+    @PreAuthorize("hasPermission(null ,'cs:appCuster:view')")
     @SystemLog("查看列表")
-    public R page(ChatRecord search) {
-        Page<ChatRecord> page = HttpContextUtils.getPage();
-        return chatRecordService.findPage(page, search);
+    public R page(AppCuster search) {
+        Page<AppCuster> page = HttpContextUtils.getPage();
+        return appCusterService.findPage(page, search);
     }
 
     /**
      * 跳转角色信息页
      */
     @RequestMapping("/detail")
-    @PreAuthorize("hasPermission(null,'cs:chatRecord:view')")
+    @PreAuthorize("hasPermission(null,'cs:appCuster:view')")
     @SystemLog("查看详情")
     public R detail(Long id) {
-        ChatRecord chatRecord = chatRecordService.getById(id);
-        return R.success().putData("chatRecord", chatRecord);
+        AppCuster appCuster = appCusterService.getById(id);
+        return R.success().putData("appCuster", appCuster);
     }
 
     /**
      * 添加或者更新
      *
-     * @param chatRecord
+     * @param appCuster
      * @return
      */
     @RequestMapping("/editData")
     @ResponseBody
-    @PreAuthorize("hasPermission(null ,'cs:chatRecord:edit')")
+    @PreAuthorize("hasPermission(null ,'cs:appCuster:edit')")
     @SystemLog("编辑信息")
-    public R editData(@Valid ChatRecord chatRecord) {
-        return chatRecordService.editData(chatRecord);
+    public R editData(@Valid AppCuster appCuster) {
+        return appCusterService.editData(appCuster);
     }
 
     /**
@@ -80,10 +80,10 @@ public class ChatRecordController {
      */
     @RequestMapping("/del")
     @ResponseBody
-    @PreAuthorize("hasPermission(null ,'cs:chatRecord:edit')")
+    @PreAuthorize("hasPermission(null ,'cs:appCuster:edit')")
     @SystemLog("删除")
     public R del(@RequestParam("ids") List<Long> ids){
-        chatRecordService.removeByIds(ids);
+        appCusterService.removeByIds(ids);
         return R.success();
     }
 }
