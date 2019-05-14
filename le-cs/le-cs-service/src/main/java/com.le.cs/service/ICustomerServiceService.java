@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.le.cs.entity.CustomerService;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.le.core.rest.R;
-import com.le.cs.vo.LoginServiceVo;
 
 /**
  * <p>
@@ -33,8 +32,12 @@ public interface ICustomerServiceService extends IService<CustomerService> {
      */
     R editData(CustomerService customerService);
 
-    R login(LoginServiceVo loginServiceVo);
-
+    /**
+     * 查询客服人员信息
+     *
+     * @param username
+     * @return
+     */
     CustomerService findByUserName(String username);
 
     boolean usernameExists(Long id, String username);
