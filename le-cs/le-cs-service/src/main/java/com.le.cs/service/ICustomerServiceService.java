@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.le.cs.entity.CustomerService;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.le.core.rest.R;
+import com.le.cs.vo.CustomerLoginVo;
+import com.le.cs.vo.PassWordVo;
 
 /**
  * <p>
@@ -43,4 +45,13 @@ public interface ICustomerServiceService extends IService<CustomerService> {
     boolean usernameExists(Long id, String username);
 
     boolean customerNum(Long openUserId, Long id);
+
+    /**
+     * 手机验证修改密码
+     *
+     * @param customerLoginVo
+     * @param passWordVo
+     * @return
+     */
+    R updatePasswordValidate(CustomerLoginVo customerLoginVo, PassWordVo passWordVo);
 }
