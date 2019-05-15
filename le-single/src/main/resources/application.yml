@@ -1,9 +1,9 @@
 server:
   tomcat:
     uri-encoding: UTF-8
-  port: 8080
-#  servlet:
-#   context-path: /longe
+  port: 8081
+  servlet:
+   context-path: /
 spring:
   profiles:
     active: @spring.active@
@@ -113,7 +113,14 @@ logging:
 longe:
   wechat:
     cert-path: c:/cert/pub/apiclient_cert.p12
-
+wx:
+  miniapp:
+    configs:
+      - appid: wxb443fc65c814424c
+        secret: 924a82d7da812993406fe1d57ddf900c
+        token: longe
+        aesKey: 1fewvsYWvbg2W55BD5GcGd70iEG7w9RdT5seR3Tgmp5
+        msgDataFormat: XML
 ---
 
 spring:
