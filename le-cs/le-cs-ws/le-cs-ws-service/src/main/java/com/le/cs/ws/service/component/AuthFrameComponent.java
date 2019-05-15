@@ -1,6 +1,7 @@
 package com.le.cs.ws.service.component;
 
 import com.le.core.util.JsonUtils;
+import com.le.cs.service.ICustomerServiceService;
 import com.le.cs.ws.service.FrameType;
 import com.le.cs.ws.service.WebSocketChannel;
 import com.le.cs.ws.service.WebSocketChannelHandler;
@@ -16,6 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
+
 /**
  * @author 严秋旺
  * @since 2019-05-15 10:31
@@ -30,8 +34,8 @@ public class AuthFrameComponent implements FrameComponent {
 
     @Autowired
     private ISysTokenService tokenService;
-//    @Autowired
-//    private I
+    @Autowired
+    private ICustomerServiceService customerServiceService;
 
     @Override
     public void receiveFrame(WebSocketChannel webSocketChannel, WebSocketFrame frame) {
@@ -41,7 +45,9 @@ public class AuthFrameComponent implements FrameComponent {
 
         if (token != null) {
             webSocketChannel.setToken(token);
-            //todo up line
+            InetSocketAddress address = (InetSocketAddress) webSocketChannel.getChannel().remoteAddress();
+            customerServiceService.online(token.getUserId(), webSocketChannel.getId(), authMessage.getLoginType(), address.getHostName());
+
             WebSocketRest webSocketRest = new WebSocketRest(FrameType.AUTH, WebSocketCode.SUCCESS);
             webSocketChannelHandler.push(webSocketChannel, webSocketRest);
         } else {

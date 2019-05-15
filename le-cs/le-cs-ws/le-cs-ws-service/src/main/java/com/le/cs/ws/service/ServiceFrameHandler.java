@@ -1,13 +1,11 @@
 package com.le.cs.ws.service;
 
 import com.le.core.util.JsonUtils;
+import com.le.cs.service.ICustomerServiceService;
 import com.le.cs.ws.service.annotation.FrameMapping;
 import com.le.cs.ws.service.component.FrameComponent;
-import com.le.cs.ws.service.message.AuthMessage;
 import com.le.cs.ws.service.rest.WebSocketCode;
 import com.le.cs.ws.service.rest.WebSocketRest;
-import com.le.system.entity.SysToken;
-import com.le.system.service.ISysTokenService;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -34,12 +32,15 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 @ChannelHandler.Sharable
 @Component
-public class ServiceMessageHandler extends SimpleChannelInboundHandler<TextWebSocketFrame>
+public class ServiceFrameHandler extends SimpleChannelInboundHandler<TextWebSocketFrame>
         implements WebSocketChannelHandler, ApplicationContextAware, InitializingBean {
 
     private ApplicationContext applicationContext;
     private Map<String, WebSocketChannel> channelMap = new ConcurrentHashMap<>();
     private Map<FrameType, FrameHandler> frameHandlerMap = new HashMap<>();
+
+    @Autowired
+    private ICustomerServiceService customerServiceService;
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
@@ -70,7 +71,16 @@ public class ServiceMessageHandler extends SimpleChannelInboundHandler<TextWebSo
         Channel channel = ctx.channel();
         String id = id(channel);
         log.debug("remove " + id);
-        channelMap.remove(id);
+        WebSocketChannel webSocketChannel = channelMap.remove(id);
+
+        if (webSocketChannel != null && webSocketChannel.isAuthenticated()) {
+            try {
+                Long userId = webSocketChannel.getToken().getUserId();
+                customerServiceService.offline(userId);
+            } catch (Exception e) {
+                log.error("下线异常，" + e.getMessage(), e);
+            }
+        }
     }
 
     @Override

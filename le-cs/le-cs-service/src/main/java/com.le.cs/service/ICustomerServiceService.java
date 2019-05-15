@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.le.cs.entity.CustomerService;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.le.core.rest.R;
+import com.le.cs.entity.enums.LoginType;
 import com.le.cs.vo.CustomerLoginVo;
 import com.le.cs.vo.PassWordVo;
 
@@ -54,4 +55,21 @@ public interface ICustomerServiceService extends IService<CustomerService> {
      * @return
      */
     R updatePasswordValidate(CustomerLoginVo customerLoginVo, PassWordVo passWordVo);
+
+    /**
+     * 上线
+     *
+     * @param userId    用户ID
+     * @param channelId 通道ID
+     * @param loginType 登录类型
+     * @param hostName  登录IP
+     */
+    void online(Long userId, String channelId, LoginType loginType, String hostName);
+
+    /**
+     * 下线
+     *
+     * @param userId 用户ID
+     */
+    void offline(Long userId);
 }

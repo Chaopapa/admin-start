@@ -33,8 +33,6 @@ public class UserAuthenticationContreoller {
     private ISSOService ssoService;
     @Autowired
     private ISysTokenService tokenService;
-    @Autowired
-    private AppCustomerAuthenticationProvider appCustomerAuthenticationProvider;
 
     /**
      * 系统用户登录
@@ -61,7 +59,7 @@ public class UserAuthenticationContreoller {
     public R appLogin(@Valid AppLogin appLogin) {
         AppCustomerAuthenticationToken authenticationToken
                 = new AppCustomerAuthenticationToken(appLogin.getUsername(), appLogin.getPassword());
-        Authentication token = appCustomerAuthenticationProvider.authenticate(authenticationToken);
+        Authentication token = authenticationManager.authenticate(authenticationToken);
         SysToken details = (SysToken) token.getDetails();
         return R.success().putData("token", details.getId());
     }

@@ -46,7 +46,7 @@ public class ServiceServerStart {
      * 通道适配器
      */
     @Resource
-    private ServiceMessageHandler serviceMessageHandler;
+    private ServiceFrameHandler serviceFrameHandler;
 
     /**
      * NETT服务器配置类
@@ -84,7 +84,6 @@ public class ServiceServerStart {
                 protected void initChannel(SocketChannel ch) {
                     ChannelPipeline pipeline = ch.pipeline();
 
-
                     // websocket 基于http协议，所以要有http编解码器
                     pipeline.addLast(new HttpServerCodec());
                     // 对写大数据流的支持
@@ -111,10 +110,10 @@ public class ServiceServerStart {
                      * 会帮你处理握手动作： handshaking（close, ping, pong） ping + pong = 心跳
                      * 对于websocket来讲，都是以frames进行传输的，不同的数据类型对应的frames也不同
                      */
-                    pipeline.addLast(new WebSocketServerProtocolHandler("/ws"));
+                    pipeline.addLast(new WebSocketServerProtocolHandler("/cs"));
 
                     // 自定义的handler
-                    pipeline.addLast(serviceMessageHandler);
+                    pipeline.addLast(serviceFrameHandler);
                 }
             });
             log.info("netty服务器在[{}]端口启动监听", port);

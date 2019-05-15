@@ -4,6 +4,7 @@ import com.le.core.util.Constant;
 import com.le.sso.filter.CorsFilter;
 import com.le.sso.filter.TokenAuthenticationFilter;
 import com.le.sso.handler.AuthenticationHandler;
+import com.le.sso.provider.AppCustomerAuthenticationProvider;
 import com.le.sso.provider.SystemUserAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -32,6 +33,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private SystemUserAuthenticationProvider systemUserAuthenticationProvider;
     @Autowired
+    private AppCustomerAuthenticationProvider appCustomerAuthenticationProvider;
+    @Autowired
     private TokenAuthenticationFilter tokenAuthenticationFilter;
     @Autowired
     private CorsFilter corsFilter;
@@ -55,6 +58,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(authenticationHandler)
 //                .accessDeniedHandler(accessDeniedHandler)  //由全局异常处理
                 .and()
+                .authenticationProvider(appCustomerAuthenticationProvider)
                 .authenticationProvider(systemUserAuthenticationProvider)
                 .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

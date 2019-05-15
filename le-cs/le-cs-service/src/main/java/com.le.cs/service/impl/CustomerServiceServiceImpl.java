@@ -9,6 +9,8 @@ import com.le.component.sms.service.IComSmslogService;
 import com.le.core.rest.RCode;
 import com.le.cs.entity.CustomerService;
 import com.le.cs.entity.OpenUser;
+import com.le.cs.entity.enums.LoginStatus;
+import com.le.cs.entity.enums.LoginType;
 import com.le.cs.mapper.CustomerServiceMapper;
 import com.le.cs.service.ICustomerServiceService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -20,6 +22,8 @@ import org.apache.commons.lang3.StringUtils;
 import com.le.cs.service.IOpenUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 
 /**
@@ -139,4 +143,23 @@ public class CustomerServiceServiceImpl extends ServiceImpl<CustomerServiceMappe
         return R.success();
     }
 
+    @Override
+    public void online(Long userId, String channelId, LoginType loginType, String hostName) {
+        CustomerService customerService = new CustomerService();
+        customerService.setId(userId);
+        customerService.setLoginStatus(LoginStatus.ONLINE)
+                .setChannelId(channelId)
+                .setLoginIp(hostName)
+                .setLoginType(loginType)
+                .setLoginTime(LocalDateTime.now());
+        baseMapper.updateById(customerService);
+    }
+
+    @Override
+    public void offline(Long userId) {
+        CustomerService customerService = new CustomerService();
+        customerService.setId(userId);
+        customerService.setLoginStatus(LoginStatus.OFFLINE);
+        baseMapper.updateById(customerService);
+    }
 }

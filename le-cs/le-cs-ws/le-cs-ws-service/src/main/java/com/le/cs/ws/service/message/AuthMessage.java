@@ -1,5 +1,6 @@
 package com.le.cs.ws.service.message;
 
+import com.le.cs.entity.enums.LoginType;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -13,4 +14,5 @@ public class AuthMessage implements Serializable {
     private static final long serialVersionUID = 8554862149832250645L;
 
     private String token;
+    private LoginType loginType;
 }
