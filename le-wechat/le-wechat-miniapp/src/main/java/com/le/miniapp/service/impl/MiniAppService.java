@@ -1,10 +1,7 @@
 package com.le.miniapp.service.impl;
 
 import cn.binarywang.wx.miniapp.api.WxMaService;
-import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
-import cn.binarywang.wx.miniapp.bean.WxMaMessage;
-import cn.binarywang.wx.miniapp.bean.WxMaPhoneNumberInfo;
-import cn.binarywang.wx.miniapp.bean.WxMaUserInfo;
+import cn.binarywang.wx.miniapp.bean.*;
 import cn.binarywang.wx.miniapp.constant.WxMaConstants;
 import com.le.miniapp.config.WxMaConfiguration;
 import com.le.miniapp.service.IMiniAppService;
@@ -42,7 +39,7 @@ public class MiniAppService implements IMiniAppService {
     }
 
     @Override
-    public String receivingServiceMessages(String appid, String requestBody, String msgSignature, String signature, String timestamp, String nonce, String echostr, String encryptType) {
+    public String receivingServiceMessages(String appid, String requestBody, String msgSignature, String signature, String timestamp, String nonce, String encryptType) {
         final WxMaService wxService = WxMaConfiguration.getMaService(appid);
 
         final boolean isJson = Objects.equals(wxService.getWxMaConfig().getMsgDataFormat(),
@@ -68,6 +65,32 @@ public class MiniAppService implements IMiniAppService {
                 inMessage = WxMaMessage.fromEncryptedXml(requestBody, wxService.getWxMaConfig(),
                         timestamp, nonce, msgSignature);
             }
+
+
+            sendMessage(WxMaKefuMessage
+                    .newTextBuilder().content("智能菜单，以下导航选择：\r\n<a href=\"weixin://bizmsgmenu?msgmenucontent=智能菜单&msgmenuid=1\">智能菜单</a>")
+                    .toUser(inMessage.getFromUser())
+                    .build(), appid);
+//                    sendMessage(WxMaKefuMessage
+//                    .newImageBuilder()
+//                    .mediaId("tA5NSrQh4S4r_yC1L_AV-VkxSxEl9NSu7VwmmarY6bmSOqN6_cQaIieR6UHX4v8L")
+//                    .toUser(inMessage.getFromUser())
+//                    .build(), appid);
+//            sendMessage(WxMaKefuMessage
+//                    .newLinkBuilder()
+//                    .url("http://baidu.com")
+//                    .title("测试")
+//                    .description("sdss")
+//                    .thumbUrl("http://mmbiz.qpic.cn/mmbiz_jpg/7lcRjcsMGPxphWtQm2bTclyfTLZoILmdG8AUdYJFIaKbRdHdLxFczP2kRY6RU7FTZNr580GvyooA1ey2rmeDicA/0")
+//                    .toUser(inMessage.getFromUser())
+//                    .build(), appid);
+//            sendMessage(WxMaKefuMessage
+//                    .newMaPageBuilder()
+//                    .pagePath("pages/person/index")
+//                    .title("测试")
+//                    .thumbMediaId("tA5NSrQh4S4r_yC1L_AV-VkxSxEl9NSu7VwmmarY6bmSOqN6_cQaIieR6UHX4v8L")
+//                    .toUser(inMessage.getFromUser())
+//                    .build(), appid);
             return "success";
         }
         log.error("不可识别的加密类型：" + encryptType);
@@ -75,9 +98,10 @@ public class MiniAppService implements IMiniAppService {
     }
 
     @Override
-    public void sendMessage(WxMaMessage message, String appid) {
+    public void sendMessage(WxMaKefuMessage message, String appid) {
+        final WxMaService wxService = WxMaConfiguration.getMaService(appid);
         try {
-            WxMaConfiguration.getRouters().get(appid).route(message);
+            wxService.getMsgService().sendKefuMsg(message);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
@@ -144,5 +168,16 @@ public class MiniAppService implements IMiniAppService {
             log.error(e.getMessage(), e);
         }
         return uploadResult;
+    }
+
+    @Override
+    public File downloadMedia(String appid, String mediaId) {
+        final WxMaService wxService = WxMaConfiguration.getMaService(appid);
+        try {
+            return wxService.getMediaService().getMedia(mediaId);
+        } catch (WxErrorException e) {
+            log.error(e.getMessage(), e);
+        }
+        return null;
     }
 }

@@ -1,14 +1,12 @@
 package com.le.miniapp.service;
 
 import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
-import cn.binarywang.wx.miniapp.bean.WxMaMessage;
+import cn.binarywang.wx.miniapp.bean.WxMaKefuMessage;
 import cn.binarywang.wx.miniapp.bean.WxMaPhoneNumberInfo;
 import cn.binarywang.wx.miniapp.bean.WxMaUserInfo;
 import me.chanjar.weixin.common.bean.result.WxMediaUploadResult;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.util.List;
 
 /**
  * @author:zqj
@@ -30,17 +28,16 @@ public interface IMiniAppService {
    * @param signature
    * @param timestamp
    * @param nonce
-   * @param echostr
    * @return
    */
-  String  receivingServiceMessages(String appid,String requestBody, String msgSignature,String signature, String timestamp, String nonce, String echostr, String encryptType);
+  String  receivingServiceMessages(String appid,String requestBody, String msgSignature,String signature, String timestamp, String nonce, String encryptType);
 
   /**
    * 发送客服消息
    * @param message
    * @param appid
    */
-  void sendMessage(WxMaMessage message,String appid);
+  void sendMessage(WxMaKefuMessage message, String appid);
 
   /**
    * 登录
@@ -85,4 +82,11 @@ public interface IMiniAppService {
    * @return
    */
   WxMediaUploadResult uploadMedia(String appid, File file);
+  /**
+   * 下载素材
+   * @param appid
+   * @param mediaId
+   * @return
+   */
+  File downloadMedia(String appid, String mediaId);
 }

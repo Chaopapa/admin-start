@@ -69,21 +69,11 @@ public class WxMaConfiguration {
 
                 WxMaService service = new WxMaServiceImpl();
                 service.setWxMaConfig(config);
-                routers.put(a.getAppid(), this.newRouter(service));
                 return service;
             }).collect(Collectors.toMap(s -> s.getWxMaConfig().getAppid(), a -> a));
     }
 
-    private WxMaMessageRouter newRouter(WxMaService service) {
-        final WxMaMessageRouter router = new WxMaMessageRouter(service);
-        router
-            .rule().handler(logHandler).next()
-            .rule().async(false).content("模板").handler(templateMsgHandler).end()
-            .rule().async(false).content("文本").handler(textHandler).end()
-            .rule().async(false).content("图片").handler(picHandler).end()
-            .rule().async(false).content("二维码").handler(qrcodeHandler).end();
-        return router;
-    }
+
 
     private final WxMaMessageHandler templateMsgHandler = (wxMessage, context, service, sessionManager) ->
         service.getMsgService().sendTemplateMsg(WxMaTemplateMessage.builder()
@@ -94,31 +84,9 @@ public class WxMaConfiguration {
             .toUser(wxMessage.getFromUser())
             .build());
 
-    private final WxMaMessageHandler logHandler = (wxMessage, context, service, sessionManager) -> {
-        System.out.println("收到消息：" + wxMessage.toString());
-        service.getMsgService().sendKefuMsg(WxMaKefuMessage.newTextBuilder().content("你好！")
-            .toUser(wxMessage.getFromUser()).build());
-    };
 
-    private final WxMaMessageHandler textHandler = (wxMessage, context, service, sessionManager) ->
-        service.getMsgService().sendKefuMsg(WxMaKefuMessage.newTextBuilder().content("回复文本消息")
-            .toUser(wxMessage.getFromUser()).build());
 
-    private final WxMaMessageHandler picHandler = (wxMessage, context, service, sessionManager) -> {
-        try {
-            WxMediaUploadResult uploadResult = service.getMediaService()
-                .uploadMedia("image", "png",
-                    ClassLoader.getSystemResourceAsStream("tmp.png"));
-            service.getMsgService().sendKefuMsg(
-                WxMaKefuMessage
-                    .newImageBuilder()
-                    .mediaId(uploadResult.getMediaId())
-                    .toUser(wxMessage.getFromUser())
-                    .build());
-        } catch (WxErrorException e) {
-            e.printStackTrace();
-        }
-    };
+
 
     private final WxMaMessageHandler qrcodeHandler = (wxMessage, context, service, sessionManager) -> {
         try {
