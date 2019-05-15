@@ -17,6 +17,7 @@ package com.le.core.util;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
@@ -43,7 +44,7 @@ public class JsonUtils {
      *
      * @param json
      * @param valueType
-     * @param           <T>
+     * @param <T>
      * @return
      */
     public static <T> T toObject(String json, Class<T> valueType) {
@@ -52,7 +53,18 @@ public class JsonUtils {
         try {
             result = mapper.readValue(json, valueType);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new JsonException(e);
+        }
+
+        return result;
+    }
+    public static <T> T toObject(String json, TypeReference<T> typeReference) {
+        T result = null;
+
+        try {
+            result = mapper.readValue(json, typeReference);
+        } catch (IOException e) {
+            throw new JsonException(e);
         }
 
         return result;
@@ -63,7 +75,7 @@ public class JsonUtils {
      *
      * @param json
      * @param valueType
-     * @param            <T>
+     * @param <T>
      * @return
      */
     public static <T> List<T> toObjectList(String json, Class<T> valueType) {
@@ -73,7 +85,7 @@ public class JsonUtils {
         try {
             result = mapper.readValue(json, typeFactory.constructCollectionType(ArrayList.class, valueType));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new JsonException(e);
         }
 
         return result;
@@ -92,7 +104,7 @@ public class JsonUtils {
         try {
             result = mapper.readValue(json, Map.class);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new JsonException(e);
         }
 
         return result;
@@ -109,7 +121,15 @@ public class JsonUtils {
             String json = mapper.writeValueAsString(object);
             return json;
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            throw new JsonException(e);
+        }
+    }
+
+    public static class JsonException extends RuntimeException {
+        private static final long serialVersionUID = -8283647152518411177L;
+
+        public JsonException(Throwable e) {
+            super(e);
         }
     }
 }
