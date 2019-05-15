@@ -16,6 +16,11 @@
         <artifactId>le-config-service</artifactId>
         <version>${le.version}</version>
     </dependency>
+    <dependency>
+        <groupId>com.le</groupId>
+        <artifactId>le-component</artifactId>
+        <version>${le.version}</version>
+    </dependency>
 </dependencies>
 
 </project>

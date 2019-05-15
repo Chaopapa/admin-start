@@ -5,9 +5,9 @@ import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
 import cn.binarywang.wx.miniapp.bean.WxMaPhoneNumberInfo;
 import com.le.core.rest.R;
 import com.le.core.rest.RCode;
-import com.le.cs.api.service.vo.AuthVo;
-import com.le.cs.api.service.vo.LoginVo;
-import com.le.cs.api.service.vo.RegisterVo;
+import com.le.cs.vo.AuthVo;
+import com.le.cs.vo.LoginVo;
+import com.le.cs.vo.RegisterVo;
 import com.le.miniapp.service.IMiniAppService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,6 +39,8 @@ public class XcxApi {
         return new R(RCode.unbind).putData("openid", result.getOpenid());
 //        return userService.login(loginVo);
     }
+
+
 
     @RequestMapping("register")
     public R register(@Valid RegisterVo registerVo) {

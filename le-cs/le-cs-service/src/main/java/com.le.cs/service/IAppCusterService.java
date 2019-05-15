@@ -1,7 +1,7 @@
 package com.le.cs.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.le.cs.entity.OpenUser;
+import com.le.cs.entity.AppCuster;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.le.core.rest.R;
 
@@ -11,9 +11,9 @@ import com.le.core.rest.R;
  * </p>
  *
  * @author WXY
- * @since 2019-05-10
+ * @since 2019-05-14
  */
-public interface IOpenUserService extends IService<OpenUser> {
+public interface IAppCusterService extends IService<AppCuster> {
 
     /**
      * 后台分页
@@ -22,15 +22,13 @@ public interface IOpenUserService extends IService<OpenUser> {
      * @param search     搜索条件
      * @return
      */
-    R findPage(Page<OpenUser> pagination, OpenUser search);
+    R findPage(Page<AppCuster> pagination, AppCuster search);
 
     /**
      * 添加或修改
      *
-     * @param openUser 数据实体
+     * @param appCuster 数据实体
      * @return
      */
-    R editData(OpenUser openUser);
-
-    boolean usernameExists(Long id, String username);
+    R editData(AppCuster appCuster);
 }

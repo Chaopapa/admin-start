@@ -26,6 +26,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.le</groupId>
+            <artifactId>le-cs-service</artifactId>
+            <version>${le.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

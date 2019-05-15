@@ -5,15 +5,13 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.le.core.base.Tree;
 import com.le.core.base.TreeNode;
-import com.le.core.util.Constant;
 import com.le.system.entity.SysResource;
 import com.le.system.entity.SysRoleResource;
-import com.le.system.entity.SysUser;
-import com.le.system.entity.enums.ResourceType;
 import com.le.system.mapper.SysResourceMapper;
 import com.le.system.mapper.SysRoleResourceMapper;
 import com.le.system.service.ISysResourceService;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,8 +19,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import com.le.system.entity.enums.ResourceType;
+
 /**
  * 资源接口实现层
+ *
  * @author lz
  * @since 2019/5/9 9:19
  */
@@ -34,6 +35,7 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
 
     /**
      * 添加或修改资源
+     *
      * @author lz
      * @since 2019/5/9 9:19
      */
@@ -55,6 +57,7 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
 
     /**
      * 获取资源管理数据树
+     *
      * @author lz
      * @since 2019/5/9 9:19
      */
@@ -64,12 +67,16 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
         qw.orderByAsc("seq");
         List<SysResource> sysResources = this.list(qw);
         Map<Long, List<SysResource>> map = sysResources.stream().collect(Collectors.groupingBy(SysResource::getParentId));
-        return createTree(0L, map);
+        return createTreeNode(0L, map);
     }
 
-    private List<TreeNode> createTree(Long pid, Map<Long, List<SysResource>> map) {
+    private List<TreeNode> createTreeNode(Long pid, Map<Long, List<SysResource>> map) {
         List<TreeNode> trees = Optional.ofNullable(map.get(pid)).orElseGet(() -> new ArrayList<>()).stream().filter(x -> x.getParentId().equals(pid)).map(x -> {
-            TreeNode treeNode = new TreeNode(String.valueOf(x.getId()), String.valueOf(x.getParentId()), x.getName(), x.getParentPath(), createTree(x.getId(), map));
+            TreeNode treeNode = new TreeNode(String.valueOf(x.getId()), x.getName(), createTreeNode(x.getId(), map),
+                    x.getUrl(), x.getPermission(),
+                    x.getType().getDesc(), x.getIcon(),
+                    String.valueOf(x.getParentId()),
+                    x.getParentPath());
             return treeNode;
         }).collect(Collectors.toList());
         return trees;
@@ -77,6 +84,7 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
 
     /**
      * 角色id查询角色的所有权限
+     *
      * @author lz
      * @since 2019/5/9 9:19
      */
@@ -87,6 +95,7 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
 
     /**
      * 校验资源权限是否存在
+     *
      * @author lz
      * @since 2019/5/9 9:19
      */
@@ -97,6 +106,7 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
         if (id != null) {
             wrapper.ne(SysResource::getId, id);
         }
+
         wrapper.eq(SysResource::getPermission, permission);
 
         Integer count = baseMapper.selectCount(wrapper);
@@ -121,6 +131,7 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
 
     /**
      * 校验父资源是否存在
+     *
      * @author lz
      * @since 2019/5/9 9:19
      */
@@ -134,18 +145,18 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
 
     /**
      * 获取vue动态菜单接口
+     *
      * @author lz
      * @since 2019/5/9 9:19
      */
     @Override
     public List<SysResource> menuTree() {
         QueryWrapper<SysResource> qw = new QueryWrapper<>();
-        qw.eq("type",ResourceType.MENU);
-        qw.orderByAsc("deep","seq");
+        qw.orderByAsc("deep", "seq");
         List<SysResource> sysResources = this.list(qw);
         List<SysResource> sysResourceList = new ArrayList<>();
         Map<Long, SysResource> dataMap = new HashMap<>(sysResources.size());
-        if(CollectionUtils.isNotEmpty(sysResources)){
+        if (CollectionUtils.isNotEmpty(sysResources)) {
             sysResources.forEach(r -> {
                 SysResource parent = dataMap.get(r.getParentId());
                 if (parent == null) {
@@ -161,30 +172,32 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
 
     /**
      * 获取父资源数据树
+     *
      * @author lz
      * @since 2019/5/9 9:19
      */
     @Override
     public List<Tree> parentTree() {
         QueryWrapper<SysResource> qw = new QueryWrapper<>();
-        qw.eq("type",ResourceType.MENU );
+        qw.eq("type", ResourceType.MENU);
         qw.orderByAsc("deep", "seq");
         List<SysResource> sysResources = this.list(qw);
         Map<Long, List<SysResource>> map = sysResources.stream().collect(Collectors.groupingBy(SysResource::getParentId));
         List<Tree> treeList = new ArrayList<>();
-        Tree node = new Tree("0", "0", "无",null);
+        Tree node = new Tree("0", "0", "无", null);
         treeList.add(node);
-        treeList.addAll(createTreeNode(0L, map));
+        treeList.addAll(createTree(0L, map));
         return treeList;
     }
 
-    private List<Tree> createTreeNode(Long pid, Map<Long, List<SysResource>> map) {
+    private List<Tree> createTree(Long pid, Map<Long, List<SysResource>> map) {
         List<Tree> trees = Optional.ofNullable(
-                map.get(pid)).orElseGet(() -> new ArrayList<>()).stream().filter( x -> x.getParentId().equals(pid)).map( x -> {
-            Tree treeNode = new Tree(String.valueOf(x.getId()),
+                map.get(pid)).orElseGet(() -> new ArrayList<>()).stream().filter(x -> x.getParentId().equals(pid)).map(x -> {
+            Tree tree = new Tree(String.valueOf(x.getId()),
                     String.valueOf(x.getParentId()), x.getName(),
-                    createTreeNode(x.getId(), map));
-            return treeNode;}).collect(Collectors.toList());
+                    createTree(x.getId(), map));
+            return tree;
+        }).collect(Collectors.toList());
         return trees;
     }
 

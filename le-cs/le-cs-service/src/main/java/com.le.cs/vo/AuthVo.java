@@ -1,4 +1,4 @@
-package com.le.cs.api.service.vo;
+package com.le.cs.vo;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
