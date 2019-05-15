@@ -4,17 +4,23 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.le.component.sms.entity.enums.SmsType;
+import com.le.component.sms.service.IComSmslogService;
+import com.le.core.rest.RCode;
 import com.le.cs.entity.CustomerService;
 import com.le.cs.entity.OpenUser;
 import com.le.cs.mapper.CustomerServiceMapper;
 import com.le.cs.service.ICustomerServiceService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.le.core.rest.R;
-import com.le.cs.service.IOpenUserService;
+import com.le.cs.vo.CustomerLoginVo;
+import com.le.cs.vo.PassWordVo;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
+import com.le.cs.service.IOpenUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 
 /**
  * <p>
@@ -29,6 +35,8 @@ public class CustomerServiceServiceImpl extends ServiceImpl<CustomerServiceMappe
 
     @Autowired
     private IOpenUserService openUserService;
+    @Autowired
+    private IComSmslogService comSmslogService;
 
     @Override
     public R findPage(Page<CustomerService> pagination, CustomerService search) {
@@ -97,4 +105,38 @@ public class CustomerServiceServiceImpl extends ServiceImpl<CustomerServiceMappe
         }
         return false;
     }
+
+    @Override
+    public CustomerService findByUserName(String username) {
+        QueryWrapper<CustomerService> qw = new QueryWrapper<>();
+        qw.eq("username", username);
+        return baseMapper.selectOne(qw);
+    }
+
+    public String encrypt(String password, Long id) {
+        if (StringUtils.isEmpty(password)) {
+            return null;
+        }
+        return DigestUtils.md5Hex(password.toLowerCase() + id);
+    }
+
+    @Override
+    public R updatePasswordValidate(CustomerLoginVo customerLoginVo, PassWordVo passWordVo) {
+        CustomerService customerService = findByUserName(customerLoginVo.getMobile());
+        if (customerService == null) {
+            return R.error("手机号未注册");
+        }
+
+        //手机验证码验证，当repeat为true时，验证通过后立即清除，否则还可以继续验证
+        boolean validate = comSmslogService.valid(customerLoginVo.getMobile(), SmsType.UPDATE_PASSWORD, customerLoginVo.getCode(), false);
+        if (!validate) {
+            return new R(RCode.smsCodeError);
+        }
+        //新密码MD5加密
+        String encrypt = encrypt(passWordVo.getNewPassword(), customerService.getId());
+        customerService.setPassword(encrypt);
+        baseMapper.updateById(customerService);
+        return R.success();
+    }
+
 }
