@@ -30,38 +30,38 @@ import java.util.UUID;
 public class SysTokenServiceImpl extends ServiceImpl<SysTokenMapper, SysToken> implements ISysTokenService {
     private static final String CACHE_KEY = "sso:token";
 
-    @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
+//    @Autowired
+//    private RedisTemplate<String, Object> redisTemplate;
 
     @EventListener(RedisKeyExpiredEvent.class)
     public void onRedisKeyExpiredEvent(RedisKeyExpiredEvent redisKeyExpiredEvent) {
-        String key = (String) redisTemplate.getKeySerializer().deserialize(redisKeyExpiredEvent.getSource());
-        log.debug("redis key expire：{}", key);
-
-        if (key.startsWith(CACHE_KEY)) {
-            String token = StringUtils.substringAfterLast(key, "::");
-            baseMapper.deleteById(token);
-        }
+//        String key = (String) redisTemplate.getKeySerializer().deserialize(redisKeyExpiredEvent.getSource());
+//        log.debug("redis key expire：{}", key);
+//
+//        if (key.startsWith(CACHE_KEY)) {
+//            String token = StringUtils.substringAfterLast(key, "::");
+//            baseMapper.deleteById(token);
+//        }
     }
 
     //    @Cacheable(cacheNames = CACHE_KEY, unless = "#result == null")
     @Override
     public SysToken findToken(String token) {
-        BoundValueOperations<String, Object> operations = redisTemplate.boundValueOps(CACHE_KEY + "::" + token);
-        SysToken sysToken = (SysToken) operations.get();
-
-        if (sysToken != null) {
-            TokenType tokenType = sysToken.getTokenType();
-
-            if (tokenType.getExpire() > 0) {
-                LocalDateTime expireTime = LocalDateTime.now().plus(tokenType.getExpire(), tokenType.getTemporalUnit());
-                sysToken.setExpireTime(expireTime);
-                Boolean present = operations.setIfPresent(sysToken, tokenType.getExpire(), tokenType.getTimeUnit());
-                return present != null && present ? sysToken : null;
-            } else {
-                return sysToken;
-            }
-        }
+//        BoundValueOperations<String, Object> operations = redisTemplate.boundValueOps(CACHE_KEY + "::" + token);
+//        SysToken sysToken = (SysToken) operations.get();
+//
+//        if (sysToken != null) {
+//            TokenType tokenType = sysToken.getTokenType();
+//
+//            if (tokenType.getExpire() > 0) {
+//                LocalDateTime expireTime = LocalDateTime.now().plus(tokenType.getExpire(), tokenType.getTemporalUnit());
+//                sysToken.setExpireTime(expireTime);
+//                Boolean present = operations.setIfPresent(sysToken, tokenType.getExpire(), tokenType.getTimeUnit());
+//                return present != null && present ? sysToken : null;
+//            } else {
+//                return sysToken;
+//            }
+//        }
 
         return null;
     }
@@ -79,28 +79,29 @@ public class SysTokenServiceImpl extends ServiceImpl<SysTokenMapper, SysToken> i
 //            }
 //        }
 
-        String tokenId = generateToken();
+//        String tokenId = generateToken();
+//
+//        SysToken token = new SysToken();
+//        token.setId(tokenId);
+//        token.setUserId(userId);
+//        token.setTokenType(tokenType);
+//
+//        if (tokenType.getExpire() > 0) {
+//            LocalDateTime expireTime = LocalDateTime.now().plus(tokenType.getExpire(), tokenType.getTemporalUnit());
+//            token.setExpireTime(expireTime);
+//        }
+//
+//        baseMapper.insert(token);
+//        BoundValueOperations<String, Object> operations = redisTemplate.boundValueOps(CACHE_KEY + "::" + tokenId);
+//
+//        if (tokenType.getExpire() > 0) {
+//            operations.set(token, tokenType.getExpire(), tokenType.getTimeUnit());
+//        } else {
+//            operations.set(token);
+//        }
 
-        SysToken token = new SysToken();
-        token.setId(tokenId);
-        token.setUserId(userId);
-        token.setTokenType(tokenType);
-
-        if (tokenType.getExpire() > 0) {
-            LocalDateTime expireTime = LocalDateTime.now().plus(tokenType.getExpire(), tokenType.getTemporalUnit());
-            token.setExpireTime(expireTime);
-        }
-
-        baseMapper.insert(token);
-        BoundValueOperations<String, Object> operations = redisTemplate.boundValueOps(CACHE_KEY + "::" + tokenId);
-
-        if (tokenType.getExpire() > 0) {
-            operations.set(token, tokenType.getExpire(), tokenType.getTimeUnit());
-        } else {
-            operations.set(token);
-        }
-
-        return token;
+//        return token;
+        return null;
     }
 
 //    @Override

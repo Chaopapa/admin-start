@@ -45,8 +45,8 @@ public class ComSmslogServiceImpl extends ServiceImpl<ComSmslogMapper, ComSmslog
     private static final long EXPIRE_TIME = 7;//保存7天
     private static final TimeUnit EXPIRE_UNIT = TimeUnit.DAYS;
 
-    @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
+//    @Autowired
+//    private RedisTemplate<String, Object> redisTemplate;
     @Autowired
     private ISysConfigService configService;
 
@@ -100,49 +100,50 @@ public class ComSmslogServiceImpl extends ServiceImpl<ComSmslogMapper, ComSmslog
     }
 
     private boolean send(ComSmslog smslog, SmsConfig smsConfig) {
-        try {
-            SendSmsResponse sendSmsResponse = SmsUtil.sendSms(smslog.getMobile(), smslog.getCaptcha(), smslog.getTplCode(), smsConfig);
-            String json = JsonUtils.toJson(sendSmsResponse);
-            log.debug("短信发送结果：" + json);
-            smslog.setResult(json);
-            String code = sendSmsResponse.getCode();
-
-            if ("OK".equalsIgnoreCase(code)) {
-                smslog.setSendTime(new Date());
-                redisTemplate.boundValueOps(PREFIX_KEY + smslog.getType() + ":" + smslog.getMobile()).set(smslog, EXPIRE_TIME, EXPIRE_UNIT);
-                return true;
-            } else {
-                log.warn("短信发送失败，" + sendSmsResponse.getMessage());
-            }
-        } catch (ClientException e) {
-            log.error("短信发送失败，" + e.getMessage());
-
-            if (log.isDebugEnabled()) {
-                log.debug("短信发送失败", e);
-            }
-        }
+//        try {
+//            SendSmsResponse sendSmsResponse = SmsUtil.sendSms(smslog.getMobile(), smslog.getCaptcha(), smslog.getTplCode(), smsConfig);
+//            String json = JsonUtils.toJson(sendSmsResponse);
+//            log.debug("短信发送结果：" + json);
+//            smslog.setResult(json);
+//            String code = sendSmsResponse.getCode();
+//
+//            if ("OK".equalsIgnoreCase(code)) {
+//                smslog.setSendTime(new Date());
+//                redisTemplate.boundValueOps(PREFIX_KEY + smslog.getType() + ":" + smslog.getMobile()).set(smslog, EXPIRE_TIME, EXPIRE_UNIT);
+//                return true;
+//            } else {
+//                log.warn("短信发送失败，" + sendSmsResponse.getMessage());
+//            }
+//        } catch (ClientException e) {
+//            log.error("短信发送失败，" + e.getMessage());
+//
+//            if (log.isDebugEnabled()) {
+//                log.debug("短信发送失败", e);
+//            }
+//        }
         return false;
     }
 
     @Override
     public ComSmslog findLastSmslog(String mobile, SmsType smsType) {
-        ComSmslog smslog = (ComSmslog) redisTemplate.boundValueOps(PREFIX_KEY + smsType + ":" + mobile).get();
-
-        if (smslog == null) {
-            smslog = baseMapper.selectLastSmslog(mobile, smsType);
-        }
-
-        return smslog;
+//        ComSmslog smslog = (ComSmslog) redisTemplate.boundValueOps(PREFIX_KEY + smsType + ":" + mobile).get();
+//
+//        if (smslog == null) {
+//            smslog = baseMapper.selectLastSmslog(mobile, smsType);
+//        }
+//
+//        return smslog;
+        return  null;
     }
 
     @Override
     public void modifyFlag(ComSmslog smslog) {
         ComSmslog update = new ComSmslog();
-        update.setId(smslog.getId());
-        update.setFlag(smslog.getFlag());
-        baseMapper.updateById(update);
-
-        redisTemplate.boundValueOps(PREFIX_KEY + smslog.getType() + ":" + smslog.getMobile()).set(smslog);
+//        update.setId(smslog.getId());
+//        update.setFlag(smslog.getFlag());
+//        baseMapper.updateById(update);
+//
+//        redisTemplate.boundValueOps(PREFIX_KEY + smslog.getType() + ":" + smslog.getMobile()).set(smslog);
     }
 
     @Override
