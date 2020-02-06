@@ -3,6 +3,8 @@ package com.le.cs.api.service.controller;
 
 import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
 import cn.binarywang.wx.miniapp.bean.WxMaPhoneNumberInfo;
+import com.le.config.entity.config.WechatConfig;
+import com.le.config.service.ISysConfigService;
 import com.le.core.rest.R;
 import com.le.core.rest.RCode;
 import com.le.cs.vo.AuthVo;
@@ -21,13 +23,15 @@ import java.io.IOException;
  * @since 2019-01-29 14:49
  **/
 @RestController
-@RequestMapping("/api/webchat")
+@RequestMapping(value = "/api/wechat",produces = "application/json;chartset=UTF-8")
 public class XcxApi {
 
 //    @Autowired
 //    private IUserService userService;
     @Autowired
     private IMiniAppService miniAppService;
+    @Autowired
+    private ISysConfigService sysConfigService;
     /**
      * 获取openid
      *
@@ -35,12 +39,14 @@ public class XcxApi {
      */
     @RequestMapping("login")
     public R login(@Valid LoginVo loginVo) {
-        WxMaJscode2SessionResult result = miniAppService.login("wxb443fc65c814424c", loginVo.getCode());
+        WxMaJscode2SessionResult result = miniAppService.login(sysConfigService.findConfig(WechatConfig.class).getAppId(), loginVo.getCode());
         return new R(RCode.unbind).putData("openid", result.getOpenid());
 //        return userService.login(loginVo);
     }
-
-
+    @RequestMapping("appid")
+    public  R getAppid(){
+        return R.success().putData("appid",sysConfigService.findConfig(WechatConfig.class).getAppId());
+    }
 
     @RequestMapping("register")
     public R register(@Valid RegisterVo registerVo) {

@@ -91,4 +91,10 @@ public interface ISysUserService extends IService<SysUser> {
      */
     int updatePassword(Long id, String password);
 
+    /**
+     * 后台用户登陆验证
+     * @param sysUser
+     * @return
+     */
+    R checkUser(SysUser sysUser);
 }

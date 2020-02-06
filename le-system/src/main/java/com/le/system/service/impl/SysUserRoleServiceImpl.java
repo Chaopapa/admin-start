@@ -9,6 +9,7 @@ import com.le.system.service.ISysUserRoleService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,5 +34,18 @@ public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUs
                 baseMapper.insert(userRole);
             });
         }
+    }
+
+    @Override
+    public ArrayList<Long> findRolesByUserId(Long id) {
+        QueryWrapper<SysUserRole> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id",id).select("role_id");
+        List<SysUserRole> sysUserRoleList = this.list(queryWrapper);
+        System.out.println(sysUserRoleList.size());
+        ArrayList<Long> roles = new ArrayList<>();
+        for (int i=0;i<sysUserRoleList.size();i++){
+            roles.add(sysUserRoleList.get(i).getRoleId());
+        }
+        return roles;
     }
 }

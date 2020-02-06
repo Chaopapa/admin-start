@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.le.system.entity.SysUser;
 import com.le.system.entity.SysUserRole;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,4 +17,6 @@ import java.util.List;
 public interface ISysUserRoleService extends IService<SysUserRole> {
 
     void replaceUserRole(SysUser user, List<Long> roles);
+
+    ArrayList<Long> findRolesByUserId(Long id);
 }

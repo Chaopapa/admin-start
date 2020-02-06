@@ -27,8 +27,12 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
         QueryWrapper<SysConfig> wrapper = new QueryWrapper<>();
         wrapper.eq("param_key", clazz.getName());
         SysConfig sysConfig = baseMapper.selectOne(wrapper);
+        System.out.println("--------------------");
+        System.out.println(clazz);
+        System.out.println(sysConfig);
 
         if (sysConfig != null && StringUtils.isNotEmpty(sysConfig.getParamValue())) {
+            System.out.println(JsonUtils.toObject(sysConfig.getParamValue(), clazz));
             return JsonUtils.toObject(sysConfig.getParamValue(), clazz);
         } else {
             try {

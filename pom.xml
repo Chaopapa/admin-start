@@ -32,7 +32,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <junit.version>4.11</junit.version>
-        <spring-boot.version>2.1.4.RELEASE</spring-boot.version>
+        <spring-boot.version>2.2.4.RELEASE</spring-boot.version>
 
         <druid.version>1.1.10</druid.version>
         <mybatis-plus-boot-starter.version>3.0.5</mybatis-plus-boot-starter.version>
@@ -45,7 +45,7 @@
         <commons-beanutils.version>1.9.3</commons-beanutils.version>
         <jackson.version>2.9.8</jackson.version>
         <lombok.version>1.16.18</lombok.version>
-        <jedis.version>2.9.3</jedis.version>
+        <jedis.version>2.9.0</jedis.version>
 
         <!--<bcprov.jdk16.version>1.46</bcprov.jdk16.version>-->
         <qiniu.version>[7.2.0, 7.2.99]</qiniu.version>
@@ -100,18 +100,18 @@
                 <artifactId>spring-boot-starter-aop</artifactId>
                 <version>${spring-boot.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-data-redis</artifactId>
-                <!-- 1.5的版本默认采用的连接池技术是jedis  2.0以上版本默认连接池是lettuce, 在这里采用jedis，所以需要排除lettuce的jar -->
-                <exclusions>
-                    <exclusion>
-                        <groupId>io.lettuce</groupId>
-                        <artifactId>lettuce-core</artifactId>
-                    </exclusion>
-                </exclusions>
-                <version>${spring-boot.version}</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-starter-data-redis</artifactId>-->
+<!--                &lt;!&ndash; 1.5的版本默认采用的连接池技术是jedis  2.0以上版本默认连接池是lettuce, 在这里采用jedis，所以需要排除lettuce的jar &ndash;&gt;-->
+<!--                <exclusions>-->
+<!--                    <exclusion>-->
+<!--                        <groupId>io.lettuce</groupId>-->
+<!--                        <artifactId>lettuce-core</artifactId>-->
+<!--                    </exclusion>-->
+<!--                </exclusions>-->
+<!--                <version>2.1.0.RELEASE</version>-->
+<!--            </dependency>-->
 
             <dependency>
                 <groupId>junit</groupId>
@@ -177,11 +177,11 @@
                 <artifactId>druid-spring-boot-starter</artifactId>
                 <version>${druid.version}</version>
             </dependency>
-            <dependency>
-                <groupId>redis.clients</groupId>
-                <artifactId>jedis</artifactId>
-                <version>${jedis.version}</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>redis.clients</groupId>-->
+<!--                <artifactId>jedis</artifactId>-->
+<!--                <version>${jedis.version}</version>-->
+<!--            </dependency>-->
             <!--spring2.0集成redis所需common-pool2-->
             <!-- 必须加上，jedis依赖此  -->
             <!-- spring boot 2.0 的操作手册有标注 大家可以去看看 地址是：https://docs.spring.io/spring-boot/docs/2.0.3.RELEASE/reference/htmlsingle/-->
@@ -242,6 +242,11 @@
                 <plugin>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
+                </plugin>
+                <plugin>
+                    <groupId>com.alibaba.cloud</groupId>
+                    <artifactId>toolkit-maven-plugin</artifactId>
+                    <version>1.0.0</version>
                 </plugin>
             </plugins>
         </pluginManagement>

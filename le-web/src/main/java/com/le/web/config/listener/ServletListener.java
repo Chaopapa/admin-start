@@ -26,4 +26,9 @@ public class ServletListener implements ServletContextListener {
             Constant.CLASS_DIR = Constant.APP_DIR;
         }
     }
+
+    @Override
+    public void contextDestroyed(ServletContextEvent servletContextEvent) {
+
+    }
 }

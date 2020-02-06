@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.le.core.rest.R;
 import com.le.core.util.Constant;
+import com.le.core.util.JwtUtils;
 import com.le.system.entity.SysUser;
 import com.le.system.entity.SysUserRole;
 import com.le.system.entity.vo.SysUserVo;
@@ -21,6 +22,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -168,5 +170,17 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         user.setPassword(newPassword);
         int rs = baseMapper.updateById(user);
         return rs;
+    }
+
+    @Override
+    public R checkUser(SysUser sysUser) {
+        System.out.println(sysUser);
+        SysUser user  =  findByUsername(sysUser.getUsername());
+        if(user!=null){
+            ArrayList<Long> roles = sysUserRoleService.findRolesByUserId(user.getId());
+            return R.success().putData("token", JwtUtils.createJWt(user.getId(),roles,3600L));
+        }else{
+            return R.error();
+        }
     }
 }

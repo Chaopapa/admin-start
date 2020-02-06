@@ -106,6 +106,10 @@ public class R implements Serializable {
         return new R(RCode.success).setData(data);
     }
 
+    public  static R loginSuccess(){
+        return new R(RCode.success);
+    }
+
     public R putData(String key, Object value) {
         if (data == null) {
             data = new HashMap<>();

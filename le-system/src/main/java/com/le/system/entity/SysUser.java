@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.le.core.base.SuperEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -22,6 +23,7 @@ import java.util.Set;
 @Data
 @TableName("sys_user")
 @EqualsAndHashCode(callSuper = true)
+@Accessors(chain = true)
 public class SysUser extends SuperEntity {
 
     private static final long serialVersionUID = 1L;

@@ -17,8 +17,8 @@ public class WechatConfig extends BaseConfig {
     private static final long serialVersionUID = 4259953952006513878L;
     //region 小程序
     @NotEmpty(message = "小程序appid为空")
-    private String xcxAppId = "";
-    private String xcxAppSecret = "";
+    private String appId = "";
+    private String secret = "";
     //endregion
     //region 公众号
     private String gzhAppId = "";
